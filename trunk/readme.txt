@@ -35,10 +35,10 @@ Upload the Keypic plugin to your blog, Activate it, then enter your [keypic.com 
 Ask some questions and we will be happy to answer!
 
 == Screenshots ==
-screen1.png
-screen2.png
-screen3.png
-screen4.png
+screenshot_comment.png
+screenshot_login.png
+screenshot_register.png
+screenshot_lostpassword.png
 
 == Upgrade Notice ==
 A new version is waiting for next week
