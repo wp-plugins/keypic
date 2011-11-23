@@ -3,8 +3,8 @@
 Plugin Name: Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.2.0
-Author: Keypic
+Version: 0.1.0
+Author: Keypic LLC
 Author URI: http://keypic.com
 License: GPLv2 or later
 */
@@ -24,23 +24,26 @@ License: GPLv2 or later
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.2.0');
+define('KEYPIC_VERSION', '0.1.0');
 define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('KEYPIC_SPAM_PERCENTAGE', 70);
 define('KEYPIC_HOST', 'ws.keypic.com');
 define('KEYPIC_WEIGHTHEIGHT', '88x31');
 
-
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
 
-if(is_admin()){require_once dirname( __FILE__ ) . '/admin.php';}
+
+//include_once dirname(__FILE__) . '/widget.php';
+//if(is_admin()){require_once dirname( __FILE__ ) . '/admin.php';}
 
 
 
 /*
 function getiFrame($WeightHeight = null)
 {
+	global $Token, $FormID, $ResponseType;
+
 	if($WeightHeight)
 	{
 		$xy = explode('x', $WeightHeight);
@@ -49,7 +52,7 @@ function getiFrame($WeightHeight = null)
 	}
 	else{$x=88; $y=31;}
 
-	$url = 'http://' . self::$host . '/?iFrame=true&Token=' . self::$Token . '&Adv=' . self::$Token;
+	$url = 'http://' . KEYPIC_HOST . '/?iFrame=true&Token=' . $Token . '&Click=' . $Token;
 
 
 	return <<<EOT
@@ -75,6 +78,7 @@ function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage
 
 	if($Token)
 	{
+		//$Token = $Token;
 		return $Token;
 	}
 	else
@@ -103,6 +107,7 @@ function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage
 			$Token = $response['Token'];
 			return  $response['Token'];
 		}
+
 	}
 }
 
@@ -113,6 +118,7 @@ function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage =
 {
 	global $Token, $FormID, $ResponseType, $spam;
 	$Token = $_POST['Token'];
+//echo "Token - $Token | FormID - $FormID";
 	$fields['Token'] = $Token;
 	$fields['FormID'] = $FormID;
 	$fields['RequestType'] = 'RequestValidation'; // 002
@@ -133,7 +139,8 @@ function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage =
 	$response = json_decode($request, true);
 
 	if($response['status'] == 'response'){$spam = $response['spam']; return $response['spam'];}
-	else if($response['status'] == 'error'){return $response['error'];}
+	else if($response['status'] == 'error')
+	{return $response['error'];}
 }
 
 
@@ -169,6 +176,7 @@ function sendRequest($fileds, $host, $path = '/', $port = 80)
 	return $return[1];
 }
 
+
 //*********************************************************************************************
 //* init
 //*********************************************************************************************
@@ -178,7 +186,9 @@ function keypic_init()
 {
 	global $FormID, $Token, $ResponseType;
 
-	$FormID = get_option('FormID');
+	// TODO: This must be automatic!
+	// Substitute XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX with the FormID, you can get it from keypic.com after registration
+	$FormID = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 	$Token = '';
 
 	if(!function_exists('json_decode')){$ResponseType = '2';}
@@ -249,6 +259,7 @@ function keypic_login_form()
 </p>
 ';
 	echo $response;
+	//keypic_login_post();
 }
 
 function keypic_login_post()
@@ -299,7 +310,9 @@ function keypic_lostpassword_form()
 //*********************************************************************************************
 
 add_action('comment_form','keypic_comment_form');
+//add_action('comment_post','');
 add_action( 'wp_insert_comment', 'keypic_comment_post', 10, 2 );
+//wp_spam_comment($comment_id);
 
 function keypic_comment_form()
 {
@@ -317,7 +330,8 @@ function keypic_comment_form()
 	echo $response;
 }
 
-function keypic_comment_post($id, $comment)
+
+function keypic_comment_post( $id, $comment )
 {
 	global $Token, $FormID, $spam;
 	$spam = isSpam($comment->comment_author_email, $comment->comment_author, $comment->comment_content, $ClientFingerprint = '');
@@ -328,6 +342,7 @@ function keypic_comment_post($id, $comment)
 		wp_spam_comment($comment->comment_ID);
 	}
 }
+
 
 class Socket
 {
