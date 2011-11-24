@@ -2,8 +2,8 @@
 Contributors: Rogledi Emanuele, Keypic
 Tags: keypic, comments, spam, registration, login, secure, form
 Requires at least: 3.0
-Tested up to: 3.1
-Stable tag: 0.2.0
+Tested up to: 3.2.1
+Stable tag: 0.2.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -13,7 +13,7 @@ Keypic checks your comments against the Keypic Web Service to see if they look l
 
 Keypic checks your forms against the Keypic Web Service to see if they look like spam or not and lets you
 review the spam it catches under your blog's "Comments" admin screen.
-
+Is also possible look at live installation at [http://wordpress.keypic.com/](http://wordpress.keypic.com/)
 
 Major new features in Keypic 0.2 include:
 
@@ -27,7 +27,7 @@ PS: You'll need an [Keypic FormID](http://keypic.com/) to use it.  Keys are free
 
 == Installation ==
 
-Upload the Keypic plugin to your blog, Activate it, then enter your [keypic.com API key](http://keypic.com/).
+Upload the Keypic plugin to your blog, Activate it, then enter your [Keypic FormID](http://keypic.com/).
 
 1, 2, 3: You're done!
 
@@ -40,12 +40,15 @@ Ask some questions and we will be happy to answer!
 2. How Keypic act on login form.
 3. How Keypic act on register form.
 4. How Keypic act on lastpassword.
-
+5. How Keypic act on register form in case of spam.
 
 == Upgrade Notice ==
 A new version is waiting for next week
 
 == Changelog ==
+
+= 0.2.1 =
+* Bug Fix: lost admin.php file :| .
 
 = 0.2 =
 * Bug Fix: Return field modified.
