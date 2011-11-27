@@ -3,7 +3,7 @@
 Plugin Name: Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.2.1
+Version: 0.3.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -23,12 +23,18 @@ License: GPLv2 or later
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+//ini_set('display_errors', 'on'); 
+//error_reporting(-1);
+//error_reporting(E_ALL);
+//error_reporting(E_ALL ^ E_NOTICE);
+
 define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.2.1');
+define('KEYPIC_VERSION', '0.3.0');
 define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('KEYPIC_SPAM_PERCENTAGE', 70);
-define('KEYPIC_HOST', 'ws.keypic.com');
-define('KEYPIC_WEIGHTHEIGHT', '88x31');
+define('KEYPIC_HOST', 'ws.keypic.com'); // ws.keypic.com
+define('KEYPIC_WEIGHTHEIGHT', ''); // default '88x31'
 
 
 // Make sure we don't expose any info if called directly
@@ -152,6 +158,7 @@ function sendRequest($fileds, $host, $path = '/', $port = 80)
 	$header .= "Content-type: multipart/form-data, boundary=$boundary\r\n";
 	$header .= "User-Agent: WordPress/{$wp_version} | Keypic/" . constant( 'KEYPIC_VERSION' ) . "\r\n";
 
+	$data = '';
 	// attach post vars
 	foreach($fileds AS $index => $value)
 	{
@@ -203,7 +210,7 @@ function keypic_register_form()
 <p>
  <label style="display: block; margin-bottom: 5px;">
   <input type="hidden" name="Token" value="'.$Token.'" />
-  <a target="_blank" href="http://'.KEYPIC_HOST.'/?Click='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?Image=true&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
+  <a target="_blank" href="http://'.KEYPIC_HOST.'/?RequestType=getClick&amp;Token='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?RequestType=getImage&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
  </label>
 </p>
 ';
@@ -244,7 +251,7 @@ function keypic_login_form()
 <p>
  <label style="display: block; margin-bottom: 5px;">
   <input type="hidden" name="Token" value="'.$Token.'" />
-  <a target="_blank" href="http://'.KEYPIC_HOST.'/?Click='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?Image=true&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
+  <a target="_blank" href="http://'.KEYPIC_HOST.'/?RequestType=getClick&amp;Token='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?RequestType=getImage&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
  </label>
 </p>
 ';
@@ -261,7 +268,7 @@ function keypic_login_post()
 	{
 		remove_action('authenticate', 'wp_authenticate_username_password', 20);
 		add_filter('shake_error_codes', 'keypic_login_error_shake');
-		return new WP_Error('denied', '<strong>SPAM</strong>: ' . __('This request has ') . $spam . __('% of spam'));
+		return new WP_Error('denied', '<strong>SPAM</strong>: ' . sprintf(__('This request has %s% of spam'), $spam));
 	}
 }
 
@@ -287,7 +294,7 @@ function keypic_lostpassword_form()
 <p>
  <label style="display: block; margin-bottom: 5px;">
   <input type="hidden" name="Token" value="'.$Token.'" />
-  <a target="_blank" href="http://'.KEYPIC_HOST.'/?Click='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?Image=true&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
+  <a target="_blank" href="http://'.KEYPIC_HOST.'/?RequestType=getClick&amp;Token='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?RequestType=getImage&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
  </label>
 </p>
 ';
@@ -310,7 +317,7 @@ function keypic_comment_form()
 <p>
  <label style="display: block; margin-bottom: 5px;">
   <input type="hidden" name="Token" value="'.$Token.'" />
-  <a target="_blank" href="http://'.KEYPIC_HOST.'/?Click='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?Image=true&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
+  <a target="_blank" href="http://'.KEYPIC_HOST.'/?RequestType=getClick&amp;Token='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?RequestType=getImage&amp;Token='.$Token.'&amp;WeightHeight='.KEYPIC_WEIGHTHEIGHT.'" alt="" style="border:0;" /></a>
  </label>
 </p>
 ';
@@ -338,8 +345,10 @@ class Socket
 	private $responseLength;
 	private $errorNumber;
 	private $errorString;
+	private $timeout;
+	private $retry;
 
-	public function __construct($host, $port, $request, $responseLength = 1024)
+	public function __construct($host, $port, $request, $responseLength = 1024, $timeout = 3, $retry = 3)
 	{
 		$this->host = $host;
 		$this->port = $port;
@@ -347,13 +356,23 @@ class Socket
 		$this->responseLength = $responseLength;
 		$this->errorNumber = 0;
 		$this->errorString = '';
+		$this->timeout = $timeout;
+		$this->retry = $retry;
 	}
 
 	public function Send()
 	{
 		$this->response = '';
+		$r = 0;
 
-		$fs = fsockopen($this->host, $this->port, $this->errorNumber, $this->errorString, 3);
+		do
+		{
+			if($r >= $this->retry){return;}
+
+			$fs = fsockopen($this->host, $this->port, $this->errorNumber, $this->errorString, $this->timeout);
+			++$r;
+		}
+		while(!$fs);
 
 		if($this->errorNumber != 0){throw new Exception('Error connecting to host: ' . $this->host . ' Error number: ' . $this->errorNumber . ' Error message: ' . $this->errorString);}
 

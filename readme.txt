@@ -1,9 +1,9 @@
 === Keypic ===
 Contributors: Rogledi Emanuele, Keypic
-Tags: keypic, comments, spam, registration, login, secure, form
+Tags: keypic, captcha, captchas, spam, antispam, free, comments, registration, login, secure, form, forms, ad, ads, adv
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 0.2.1
+Stable tag: 0.3.0
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -13,26 +13,28 @@ Keypic checks your comments against the Keypic Web Service to see if they look l
 
 Keypic checks your forms against the Keypic Web Service to see if they look like spam or not and lets you
 review the spam it catches under your blog's "Comments" admin screen.
+Keypic protect also your login form from brute force dictionary attachs, your registration form from unwanted spammers and generally all the forms you can imagine :)
+If you want a complete free antispam solution, you don't want to install CAPTCHAs plugins and so on, this is the right choice.
 Is also possible look at live installation at [http://wordpress.keypic.com/](http://wordpress.keypic.com/)
 
-Major new features in Keypic 0.2 include:
+Major new features in Keypic 0.3 include:
 
-* A comment status history, so you can easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator
-* Links are highlighted in the comment body, to reveal hidden or misleading links
+* It is no more needed to be registered, Keypic function also without registration, but with some limitations.
+* Check of your FormID in Keypic Configuration
+* Only if you are registered is available the comment status history, so you can easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator
 * If your web host is unable to reach Keypic's servers, the plugin will automatically retry when your connection is back up
-* Moderators can see the number of approved comments for each user
-* Spam and Unspam reports now include more information, to help improve accuracy
 
-PS: You'll need an [Keypic FormID](http://keypic.com/) to use it.  Keys are free for every kind of use (It's free and will always be.)
+PS: You'll need an [Keypic FormID](http://keypic.com/) to get improved functionality.  Keys are free for every kind of use (It's free and will always be.)
 
 == Installation ==
 
-Upload the Keypic plugin to your blog, Activate it, then enter your [Keypic FormID](http://keypic.com/).
+Upload the Keypic plugin to your blog, Activate it, then enter your [Keypic FormID](http://keypic.com/modules/register/) (if you want it, is not obbligatory).
 
 1, 2, 3: You're done!
 
 == Frequently Asked Questions ==
 Ask some questions and we will be happy to answer!
+Just bring us a [feedback](http://keypic.com/modules/feedback/)
 
 == Screenshots ==
 
@@ -46,6 +48,11 @@ Ask some questions and we will be happy to answer!
 A new version is waiting for next week
 
 == Changelog ==
+
+= 0.3.0 =
+* Bug Fix: Some little bugs was fixed.
+* Enhancement: Added FormID Management.
+* Enhancement: It is no more needed to be registered, Keypic function also without registration, but with some limitations.
 
 = 0.2.1 =
 * Bug Fix: lost admin.php file :| .
