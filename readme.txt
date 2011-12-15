@@ -1,9 +1,9 @@
 === Keypic ===
-Contributors: Rogledi Emanuele, Keypic
-Tags: keypic, captcha, captchas, spam, antispam, free, comments, registration, login, secure, form, forms, ad, ads, adv
+Contributors: Keypic
+Tags: keypic, captcha, captchas, spam, antispam, free, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -17,7 +17,7 @@ Keypic protect also your login form from brute force dictionary attachs, your re
 If you want a complete free antispam solution, you don't want to install CAPTCHAs plugins and so on, this is the right choice.
 Is also possible look at live installation at [http://wordpress.keypic.com/](http://wordpress.keypic.com/)
 
-Major new features in Keypic 0.3 include:
+Major new features in Keypic 0.4 include:
 
 * It is no more needed to be registered, Keypic function also without registration, but with some limitations.
 * Check of your FormID in Keypic Configuration
@@ -48,6 +48,10 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 0.4.0 =
+* Enhancement: Added dropdown menu to choose the format of kepic logo (also 1x1 transparent is allowd)
+* Enhancement: Added dropdown menu to choose Image or iFrame
 
 = 0.3.0 =
 * Bug Fix: Some little bugs was fixed.
