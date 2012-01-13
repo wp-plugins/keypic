@@ -3,7 +3,7 @@
 Plugin Name: Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.4.0
+Version: 0.5.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -24,24 +24,26 @@ License: GPLv2 or later
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+//ini_set('display_errors', 'on');
+//error_reporting(-1);
+//error_reporting(E_ALL);
+//error_reporting(E_ALL ^ E_NOTICE);
 
 define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.4.0');
+define('KEYPIC_VERSION', '0.5.0');
 define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('KEYPIC_SPAM_PERCENTAGE', 70);
 define('KEYPIC_HOST', 'ws.keypic.com'); // ws.keypic.com
 define('KEYPIC_WEIGHTHEIGHT', ''); // default '88x31'
-
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
 
 if(is_admin()){require_once dirname( __FILE__ ) . '/admin.php';}
 
-
 function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '', $Quantity = 1)
 {
-	global $Token, $FormID, $ResponseType;
+	global $Token, $FormID;
 
 	if($Token)
 	{
@@ -50,7 +52,7 @@ function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage
 	else
 	{
 		$fields['FormID'] = $FormID;
-		$fields['RequestType'] = 'RequestNewToken'; // 001
+		$fields['RequestType'] = 'RequestNewToken';
 		$fields['ResponseType'] = '2';
 		$fields['ServerName'] = $_SERVER['SERVER_NAME'];
 		$fields['Quantity'] = $Quantity;
@@ -77,16 +79,13 @@ function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage
 	}
 }
 
-
-
-
 function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '')
 {
-	global $Token, $FormID, $ResponseType, $spam;
+	global $Token, $FormID, $spam;
 	$Token = $_POST['Token'];
 	$fields['Token'] = $Token;
 	$fields['FormID'] = $FormID;
-	$fields['RequestType'] = 'RequestValidation'; // 002
+	$fields['RequestType'] = 'RequestValidation';
 	$fields['ResponseType'] = '2';
 	$fields['ServerName'] = $_SERVER['SERVER_NAME'];
 	$fields['ClientIP'] = $_SERVER['REMOTE_ADDR'];
@@ -108,6 +107,17 @@ function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage =
 	else if($response['status'] == 'error'){return $response['error'];}
 }
 
+function reportSpam($FormID, $Token)
+{
+	$fields['Token'] = $Token;
+	$fields['FormID'] = $FormID;
+	$fields['RequestType'] = 'ReportSpam';
+	$fields['ResponseType'] = '2';
+print_r($fields);
+	$request = sendRequest($fields, KEYPIC_HOST);
+	$response = json_decode($request, true);
+	return $response;
+}
 
 // makes a request to the Keypic Web Service
 function sendRequest($fileds, $host, $path = '/', $port = 80)
@@ -145,14 +155,11 @@ function sendRequest($fileds, $host, $path = '/', $port = 80)
 //*********************************************************************************************
 //* init
 //*********************************************************************************************
-add_action('init', 'keypic_init');
 
 function keypic_init()
 {
-	global $keypic_details, $FormID, $Token, $ResponseType;
+	global $keypic_details, $FormID, $Token;
 
-
-	// Back compatibility with Plugin Version =< 0.3.0 -> get_option('FormID') must be removed
 	$FormID = get_option('FormID');
 	if($FormID)
 	{
@@ -162,21 +169,14 @@ function keypic_init()
 	}
 
 	$keypic_details = get_option('keypic_details');
-
+	$FormID = $keypic_details['FormID'];
 	$Token = '';
-
-	if(!function_exists('json_decode')){$ResponseType = '2';}
-	else{$ResponseType = '4';}
 }
-
-
+add_action('init', 'keypic_init');
 
 //*********************************************************************************************
 //* Register form
 //*********************************************************************************************
-add_action('register_form','keypic_register_form');
-add_action('register_post','keypic_register_post');
-
 
 function keypic_register_form()
 {
@@ -193,18 +193,17 @@ function keypic_register_form()
  </label>
 </p>
 ';
+
 	echo $response;
 }
+add_action('register_form','keypic_register_form');
 
 function keypic_register_post()
 {
-	global $Token, $FormID, $spam;
+	global $Token, $spam;
 	$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
-
-	// if spam % is more than x% don't accept it and give back an error
-	if($spam > KEYPIC_SPAM_PERCENTAGE)
-	add_filter('registration_errors', 'keypic_registration_errors', 10, 3);
 }
+add_action('register_post','keypic_register_post');
 
 function keypic_registration_errors($errors)
 {
@@ -214,12 +213,32 @@ function keypic_registration_errors($errors)
 }
 
 
+function keypic_user_register($user_id)
+{
+	global $Token, $spam;
+
+	$keypic_users = get_option('keypic_users');
+	$keypic_users = keypic_remove_old_tokens($keypic_users);
+	$keypic_users[$user_id] = array('token' => $Token, 'ts' => time(), 'spam' => $spam);
+	update_option('keypic_users', $keypic_users);
+}
+add_action( 'user_register', 'keypic_user_register', 10, 1);
+
+
+function keypic_remove_old_tokens($old_tokens)
+{
+	$new_tokens = array();
+	$three_days_ago = (time() - (60*60*24*3));
+	foreach($old_tokens as $k => $v)
+	{
+		if($v['ts'] > $three_days_ago){$new_tokens[$k] = $v;}
+	}
+	return $new_tokens;
+}
+
 //*********************************************************************************************
 //* Login form
 //*********************************************************************************************
-
-add_action('login_form','keypic_login_form');
-add_filter( 'authenticate', 'keypic_login_post', 10);
 
 function keypic_login_form()
 {
@@ -238,6 +257,7 @@ function keypic_login_form()
 ';
 	echo $response;
 }
+add_action('login_form','keypic_login_form');
 
 function keypic_login_post()
 {
@@ -245,13 +265,14 @@ function keypic_login_post()
 	$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
 
 	// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and give back an error
-	if($spam > KEYPIC_SPAM_PERCENTAGE)
+	if(!is_numeric($spam) && $spam > KEYPIC_SPAM_PERCENTAGE)
 	{
 		remove_action('authenticate', 'wp_authenticate_username_password', 20);
 		add_filter('shake_error_codes', 'keypic_login_error_shake');
-		return new WP_Error('denied', '<strong>SPAM</strong>: ' . sprintf(__('This request has %s% of spam'), $spam));
+		return new WP_Error('denied', '<strong>SPAM</strong>: ' . sprintf(__('This request has %s&#37; of spam'), $spam));
 	}
 }
+add_filter( 'authenticate', 'keypic_login_post', 10);
 
 function keypic_login_error_shake($shake_codes)
 {
@@ -262,8 +283,6 @@ function keypic_login_error_shake($shake_codes)
 //*********************************************************************************************
 //* lost password form
 //*********************************************************************************************
-
-add_action('lostpassword_form', 'keypic_lostpassword_form');
 
 function keypic_lostpassword_form()
 {
@@ -282,13 +301,18 @@ function keypic_lostpassword_form()
 ';
 	echo $response;
 }
+add_action('lostpassword_form', 'keypic_lostpassword_form');
+
+function keypic_lostpassword_post()
+{
+	global $Token, $keypic_details;
+
+}
+add_action('lostpassword_post','keypic_lostpassword_post');
 
 //*********************************************************************************************
 //* Comment form
 //*********************************************************************************************
-
-add_action('comment_form','keypic_comment_form');
-add_action( 'wp_insert_comment', 'keypic_comment_post', 10, 2 );
 
 function keypic_comment_form()
 {
@@ -307,18 +331,77 @@ function keypic_comment_form()
 ';
 	echo $response;
 }
+add_action('comment_form','keypic_comment_form');
 
 function keypic_comment_post($id, $comment)
 {
 	global $Token, $FormID, $spam;
 	$spam = isSpam($comment->comment_author_email, $comment->comment_author, $comment->comment_content, $ClientFingerprint = '');
 
+	$keypic_comments = get_option('keypic_comments');
+	$keypic_comments = keypic_remove_old_tokens($keypic_comments);
+	$keypic_comments[$comment->comment_ID] = array('token' => $Token, 'ts' => time(), 'spam' => $spam);
+	update_option('keypic_comments', $keypic_comments);
+
 	// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and put it in spam status
-	if($spam > KEYPIC_SPAM_PERCENTAGE)
+	if(!is_numeric($spam) && $spam > KEYPIC_SPAM_PERCENTAGE)
 	{
 		wp_spam_comment($comment->comment_ID);
 	}
 }
+add_action( 'wp_insert_comment', 'keypic_comment_post', 10, 2 );
+
+function keypic_manage_edit_comments_columns($columns)
+{
+	global $keypic_comments;
+	$keypic_comments = get_option('keypic_comments');
+	$columns['spam_status'] = __('Keypic SPAM Status');
+	return $columns;
+}
+add_filter('manage_edit-comments_columns', 'keypic_manage_edit_comments_columns');
+
+function keypic_manage_comments_custom_column($column, $id)
+{
+	global $keypic_comments;
+	$comments = $keypic_comments[$id];
+
+	if('spam_status' == $column)
+	{
+		if($comments['spam'])
+		{
+			if($comments['spam'] > 70){echo "<b><a href=\"admin.php?action=keypic_report_spam_and_delete_comment&id=$id\" style=\"color:red;\" onclick=\"return confirm('" . __('Are you sure you want to delete this user?') . "')\">" . sprintf(__('Report SPAM and Delete (spam %s&#37;)'), $comments['spam']) . "</a></b>";}
+			else{echo "<a href=\"admin.php?action=keypic_report_spam_and_delete_comment&id=$id\" onclick=\"return confirm('" . __('Are you sure you want to delete this user?') . "')\">" . sprintf(__('Report SPAM and Delete (spam %s&#37;)'), $comments['spam']) . "</a>";}
+		}
+	}
+}
+add_filter('manage_comments_custom_column', 'keypic_manage_comments_custom_column', 10, 2);
+
+function keypic_manage_users_columns($columns)
+{
+	global $keypic_users;
+	$keypic_users = get_option('keypic_users');
+	$columns['spam_status'] = __('Keypic SPAM Status');
+ 	return $columns;
+
+}
+add_filter('manage_users_columns', 'keypic_manage_users_columns');
+
+function keypic_manage_users_custom_column($empty='', $column_name, $id)
+{
+	global $keypic_users;
+	$users = $keypic_users[$id];
+
+
+	if($users['spam'])
+	{
+		if($users['spam'] > 70){$return .= "<b><a href=\"admin.php?action=keypic_report_spam_and_delete_user&id=$id\" style=\"color:red;\" onclick=\"return confirm('" . __('Are you sure you want to delete this user?') . "')\">" . sprintf(__('Report SPAM and Delete (spam %s&#37;)'), $users['spam']) . "</a></b>";}
+		else{$return .= "<a href=\"admin.php?action=keypic_report_spam_and_delete_user&id=$id\" onclick=\"return confirm('" . __('Are you sure you want to delete this user?') . "')\">" . sprintf(__('Report SPAM and Delete (spam %s&#37;)'), $users['spam']) . "</a>";}
+
+	}
+
+	return $return;
+}
+add_filter('manage_users_custom_column', 'keypic_manage_users_custom_column', 10, 3);
 
 
 function keypic_get_it($RequestType = 'getImage', $WeightHeight = '88x31')
@@ -335,7 +418,7 @@ function keypic_get_it($RequestType = 'getImage', $WeightHeight = '88x31')
 		}
 		else{$x=88; $y=31;}
 
-		$url = 'http://'.KEYPIC_HOST.'/?RequestType=getiFrame&amp;Token=' . $Token;
+		$url = 'http://'.KEYPIC_HOST.'/?RequestType=getiFrame&amp;WeightHeight='.$WeightHeight.'&amp;Token=' . $Token;
 
 		return <<<EOT
 	<iframe

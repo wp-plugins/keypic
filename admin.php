@@ -48,6 +48,41 @@ function keypic_plugin_action_links( $links, $file )
 
 add_filter( 'plugin_action_links', 'keypic_plugin_action_links', 10, 2 );
 
+function keypic_report_spam_and_delete_comment()
+{
+	global $keypic_comments, $FormID;
+
+	if(!(isset($_GET['id']) || (isset($_REQUEST['action']) && 'keypic_report_spam_and_delete_comment' == $_REQUEST['action']))){return;}
+
+	$comment = $keypic_comments[$_GET['id']];
+
+	reportSpam($FormID, $comment['token']);
+	wp_delete_comment($_GET['id']);
+
+	wp_redirect( $_SERVER['HTTP_REFERER'] );
+	die();
+}
+
+add_action('admin_action_keypic_report_spam_and_delete_comment', 'keypic_report_spam_and_delete_comment');
+
+function keypic_report_spam_and_delete_user()
+{
+	global $FormID;
+
+	if(!(isset($_GET['id']) || (isset($_REQUEST['action']) && 'keypic_report_spam_and_delete_user' == $_REQUEST['action']))){return;}
+
+	$keypic_users = get_option('keypic_users');
+	$user = $keypic_users[$_GET['id']];
+
+	reportSpam($FormID, $user['token']);
+	wp_delete_user($_GET['id']);
+
+	wp_redirect( $_SERVER['HTTP_REFERER'] );
+	die();
+}
+
+add_action('admin_action_keypic_report_spam_and_delete_user', 'keypic_report_spam_and_delete_user');
+
 function keypic_conf()
 {
 	global $keypic_details, $ms, $messages;
