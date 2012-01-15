@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Plugin Name: Keypic
 Plugin URI: http://keypic.com/
@@ -113,7 +113,7 @@ function reportSpam($FormID, $Token)
 	$fields['FormID'] = $FormID;
 	$fields['RequestType'] = 'ReportSpam';
 	$fields['ResponseType'] = '2';
-print_r($fields);
+
 	$request = sendRequest($fields, KEYPIC_HOST);
 	$response = json_decode($request, true);
 	return $response;
@@ -194,7 +194,7 @@ function keypic_register_form()
 </p>
 ';
 
-	echo $response;
+	return $response;
 }
 add_action('register_form','keypic_register_form');
 
@@ -255,7 +255,7 @@ function keypic_login_form()
  </label>
 </p>
 ';
-	echo $response;
+	return $response;
 }
 add_action('login_form','keypic_login_form');
 
@@ -299,7 +299,7 @@ function keypic_lostpassword_form()
  </label>
 </p>
 ';
-	echo $response;
+	return $response;
 }
 add_action('lostpassword_form', 'keypic_lostpassword_form');
 
@@ -329,7 +329,7 @@ function keypic_comment_form()
  </label>
 </p>
 ';
-	echo $response;
+	return $response;
 }
 add_action('comment_form','keypic_comment_form');
 
