@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 add_action( 'admin_menu', 'keypic_config_page' );
 
 add_action('admin_init', 'keypic_admin_init');

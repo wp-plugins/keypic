@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Plugin Name: Keypic
 Plugin URI: http://keypic.com/
