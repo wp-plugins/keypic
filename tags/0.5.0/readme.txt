@@ -1,4 +1,4 @@
-=== Keypic ===
+﻿=== NO CAPTCHA Anti Spam ===
 Contributors: Keypic
 Tags: keypic, captcha, captchas, spam, antispam, free, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
