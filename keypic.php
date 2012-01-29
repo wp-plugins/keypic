@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 /*
 Plugin Name: Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.5.0
+Version: 0.6.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -24,13 +24,8 @@ License: GPLv2 or later
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-//ini_set('display_errors', 'on');
-//error_reporting(-1);
-//error_reporting(E_ALL);
-//error_reporting(E_ALL ^ E_NOTICE);
-
 define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.5.0');
+define('KEYPIC_VERSION', '0.6.0');
 define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('KEYPIC_SPAM_PERCENTAGE', 70);
 define('KEYPIC_HOST', 'ws.keypic.com'); // ws.keypic.com
@@ -82,6 +77,10 @@ function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage
 function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '')
 {
 	global $Token, $FormID, $spam;
+
+	// TODO: manage it
+	//if($Token == ''){return 'error';}
+
 	$Token = $_POST['Token'];
 	$fields['Token'] = $Token;
 	$fields['FormID'] = $FormID;
@@ -109,6 +108,9 @@ function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage =
 
 function reportSpam($FormID, $Token)
 {
+	if($Token == ''){return 'error';}
+	if($FormID == ''){return 'error';}
+
 	$fields['Token'] = $Token;
 	$fields['FormID'] = $FormID;
 	$fields['RequestType'] = 'ReportSpam';
@@ -194,23 +196,23 @@ function keypic_register_form()
 </p>
 ';
 
-	return $response;
+	echo $response;
 }
 add_action('register_form','keypic_register_form');
 
-function keypic_register_post()
+function keypic_register_post($login, $email, $errors)
 {
 	global $Token, $spam;
-	$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
-}
-add_action('register_post','keypic_register_post');
 
-function keypic_registration_errors($errors)
-{
-	global $spam;
-	$errors->add('keypic_error', __('This request has ') . $spam . __('% of spam'));
-	return $errors;
+	$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
+
+	if(!is_numeric($spam) || $spam > KEYPIC_SPAM_PERCENTAGE)
+	{
+		$errors->add('empty_token', "<strong>ERROR</strong>: We are sorry, your Keypic token is not valid");
+	}
+
 }
+add_action('register_post','keypic_register_post', 10, 3);
 
 
 function keypic_user_register($user_id)
@@ -255,24 +257,33 @@ function keypic_login_form()
  </label>
 </p>
 ';
-	return $response;
+	echo $response;
 }
 add_action('login_form','keypic_login_form');
 
 function keypic_login_post()
 {
 	global $Token, $FormID, $spam;
-	$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
 
-	// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and give back an error
-	if(!is_numeric($spam) && $spam > KEYPIC_SPAM_PERCENTAGE)
+	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		remove_action('authenticate', 'wp_authenticate_username_password', 20);
-		add_filter('shake_error_codes', 'keypic_login_error_shake');
-		return new WP_Error('denied', '<strong>SPAM</strong>: ' . sprintf(__('This request has %s&#37; of spam'), $spam));
+		$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
+
+		// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and give back an error
+		if(!is_numeric($spam) || $spam > KEYPIC_SPAM_PERCENTAGE)
+		{
+			remove_action('authenticate', 'wp_authenticate_username_password', 20);
+echo "spam: $spam";
+			if(is_numeric($spam)){$error = sprintf(__('This request has %s&#37; of spam'), $spam);}
+			else{$error = __('We are sorry, your Keypic token is not valid');}
+
+			add_filter('shake_error_codes', 'keypic_login_error_shake');
+			return new WP_Error('denied', '<strong>SPAM</strong>: ' . $error);
+		}
 	}
 }
 add_filter( 'authenticate', 'keypic_login_post', 10);
+
 
 function keypic_login_error_shake($shake_codes)
 {
@@ -299,7 +310,7 @@ function keypic_lostpassword_form()
  </label>
 </p>
 ';
-	return $response;
+	echo $response;
 }
 add_action('lostpassword_form', 'keypic_lostpassword_form');
 
@@ -329,7 +340,7 @@ function keypic_comment_form()
  </label>
 </p>
 ';
-	return $response;
+	echo $response;
 }
 add_action('comment_form','keypic_comment_form');
 
@@ -344,7 +355,7 @@ function keypic_comment_post($id, $comment)
 	update_option('keypic_comments', $keypic_comments);
 
 	// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and put it in spam status
-	if(!is_numeric($spam) && $spam > KEYPIC_SPAM_PERCENTAGE)
+	if(!is_numeric($spam) || $spam > KEYPIC_SPAM_PERCENTAGE)
 	{
 		wp_spam_comment($comment->comment_ID);
 	}
@@ -362,11 +373,13 @@ add_filter('manage_edit-comments_columns', 'keypic_manage_edit_comments_columns'
 
 function keypic_manage_comments_custom_column($column, $id)
 {
-	global $keypic_comments;
+	global $FormID, $keypic_comments;
 	$comments = $keypic_comments[$id];
 
 	if('spam_status' == $column)
 	{
+		//if($FormID == ''){}
+
 		if($comments['spam'])
 		{
 			if($comments['spam'] > 70){echo "<b><a href=\"admin.php?action=keypic_report_spam_and_delete_comment&id=$id\" style=\"color:red;\" onclick=\"return confirm('" . __('Are you sure you want to delete this user?') . "')\">" . sprintf(__('Report SPAM and Delete (spam %s&#37;)'), $comments['spam']) . "</a></b>";}
@@ -438,7 +451,7 @@ EOT;
 	}
 	else // by default RequestType=getImage
 	{
-		echo '<a target="_blank" href="http://'.KEYPIC_HOST.'/?RequestType=getClick&amp;Token='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?RequestType=getImage&amp;Token='.$Token.'&amp;WeightHeight='.$WeightHeight.'" alt="Protected by Keypic" style="border:0;" /></a>';
+		return '<a target="_blank" href="http://'.KEYPIC_HOST.'/?RequestType=getClick&amp;Token='.$Token.'"><img src="http://'.KEYPIC_HOST.'/?RequestType=getImage&amp;Token='.$Token.'&amp;WeightHeight='.$WeightHeight.'" alt="Protected by Keypic" style="border:0;" /></a>';
 	}
 }
 
@@ -564,3 +577,6 @@ class Socket
 
 	public function getErrorString(){return $this->errorString;}
 }
+
+
+?>

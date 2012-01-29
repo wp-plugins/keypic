@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 add_action( 'admin_menu', 'keypic_config_page' );
 
 add_action('admin_init', 'keypic_admin_init');
@@ -105,7 +105,13 @@ function keypic_conf()
 			$response = json_decode($request, true);
 
 			if($response['status'] == 'response'){$ms[] = 'key_valid'; $keypic_details['FormID'] = $FormID; update_option('keypic_details', $keypic_details);}
-			else if($response['status'] == 'error'){$ms[] = 'key_not_valid'; $keypic_details['FormID'] = $FormID; update_option('keypic_details', $keypic_details);}
+			else if($response['status'] == 'error')
+			{
+				$ms[] = 'key_not_valid';
+				if($FormID != ''){$FormID = '';}
+				$keypic_details['FormID'] = $FormID;
+				update_option('keypic_details', $keypic_details);
+			}
 		}
 
 		if($_POST['submit2'] == 'submit2')
@@ -205,3 +211,6 @@ function keypic_conf()
 	echo '<input type="hidden" name="submit2" value="submit2" />';
 	echo	'</form>';
 }
+
+
+?>
