@@ -56,7 +56,7 @@ function keypic_report_spam_and_delete_comment()
 
 	$comment = $keypic_comments[$_GET['id']];
 
-	reportSpam($FormID, $comment['token']);
+	Keypic::reportSpam($comment['token']);
 	wp_delete_comment($_GET['id']);
 
 	wp_redirect( $_SERVER['HTTP_REFERER'] );
@@ -74,7 +74,7 @@ function keypic_report_spam_and_delete_user()
 	$keypic_users = get_option('keypic_users');
 	$user = $keypic_users[$_GET['id']];
 
-	reportSpam($FormID, $user['token']);
+	Keypic::reportSpam($user['token']);
 	wp_delete_user($_GET['id']);
 
 	wp_redirect( $_SERVER['HTTP_REFERER'] );
@@ -87,41 +87,42 @@ function keypic_conf()
 {
 	global $keypic_details, $ms, $messages;
 
-	if(isset($_POST['submit']))
+	//
+	if($_POST['submit1'] == 'submit1')
 	{
+		$FormID = $_POST['formid'];
 
-		if($_POST['submit1'] == 'submit1')
+		if(empty($FormID)){$ms[] = 'key_empty';}
+		else{$FormID = strtolower($FormID);}
+
+		$fields['RequestType'] = 'checkFormID';
+		$fields['ResponseType'] = '2';
+		$fields['FormID'] = $FormID;
+		$request = Keypic::sendRequest($fields);
+
+		$response = json_decode($request, true);
+
+		if($response['status'] == 'response'){$ms[] = 'key_valid'; $keypic_details['FormID'] = $FormID; update_option('keypic_details', $keypic_details);}
+		else if($response['status'] == 'error')
 		{
-			$FormID = $_POST['formid'];
-
-			if(empty($FormID)){$ms[] = 'key_empty';}
-			else{$FormID = strtolower($FormID);}
-
-			$fields['RequestType'] = 'checkFormID';
-			$fields['ResponseType'] = '2';
-			$fields['FormID'] = $FormID;
-			$request = sendRequest($fields, KEYPIC_HOST);
-
-			$response = json_decode($request, true);
-
-			if($response['status'] == 'response'){$ms[] = 'key_valid'; $keypic_details['FormID'] = $FormID; update_option('keypic_details', $keypic_details);}
-			else if($response['status'] == 'error')
-			{
-				$ms[] = 'key_not_valid';
-				if($FormID != ''){$FormID = '';}
-				$keypic_details['FormID'] = $FormID;
-				update_option('keypic_details', $keypic_details);
-			}
-		}
-
-		if($_POST['submit2'] == 'submit2')
-		{
-			$keypic_details['register'] = array('RequestType' => $_POST['register_requesttype'], 'WeighthEight' => $_POST['register_weightheight']);
-			$keypic_details['login'] = array('RequestType' => $_POST['login_requesttype'], 'WeighthEight' => $_POST['login_weightheight']);
-			$keypic_details['comments'] = array('RequestType' => $_POST['comments_requesttype'], 'WeighthEight' => $_POST['comments_weightheight']);
-			$keypic_details['lostpassword'] = array('RequestType' => $_POST['lostpassword_requesttype'], 'WeighthEight' => $_POST['lostpassword_weightheight']);
+			$ms[] = 'key_not_valid';
+			if($FormID != ''){$FormID = '';}
+			$keypic_details['FormID'] = $FormID;
 			update_option('keypic_details', $keypic_details);
 		}
+	}
+	else
+	{
+		if($keypic_details['FormID'] == ''){$ms[] = 'key_empty';}
+	}
+
+	if($_POST['submit2'] == 'submit2')
+	{
+		$keypic_details['register'] = array('RequestType' => $_POST['register_requesttype'], 'WeighthEight' => $_POST['register_weightheight']);
+		$keypic_details['login'] = array('RequestType' => $_POST['login_requesttype'], 'WeighthEight' => $_POST['login_weightheight']);
+		$keypic_details['comments'] = array('RequestType' => $_POST['comments_requesttype'], 'WeighthEight' => $_POST['comments_weightheight']);
+		$keypic_details['lostpassword'] = array('RequestType' => $_POST['lostpassword_requesttype'], 'WeighthEight' => $_POST['lostpassword_weightheight']);
+		update_option('keypic_details', $keypic_details);
 	}
 	else
 	{
@@ -136,7 +137,7 @@ function keypic_conf()
 	echo '<h2>' . __('Keypic Configuration') . '</h2>';
 
 	// Form
-	echo	'<form action="" method="post" style="margin: auto; width: 750px; ">';
+	echo	'<form name="formid" action="" method="post" style="margin: auto; width: 750px; ">';
 
 	echo '<p>' . __('For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> will greatly reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Keypic will learn from the mistakes. If you don\'t have an API FormID yet, you can get one at <a href="http://keypic.com/modules/register/" target="_blank">keypic.com</a>.') . '</p>';
 	echo '<h3><label for="key">' . __('Keypic FormID') . '</label></h3>';
@@ -153,12 +154,12 @@ function keypic_conf()
 		echo '<p>' . __('This can mean one of two things, either you copied the key wrong or that the plugin is unable to reach the Keypic servers, which is most often caused by an issue with your web host around firewalls or similar.') . '</p>';
 	}
 
-	echo '<p class="submit"><input type="submit" name="submit" value="' . __('Update FormID &raquo;') . '" /></p>';
+	echo '<p class="submit"><input type="submit" name="input_submit" value="' . __('Update FormID &raquo;') . '" /></p>';
 	echo '<input type="hidden" name="submit1" value="submit1" />';
 	echo	'</form>';
 
 	// Form
-	echo	'<form action="" method="post" style="margin: auto; width: 750px; ">';
+	echo	'<form name="formlist" action="" method="post" style="margin: auto; width: 750px; ">';
 
 	echo '<div id="dashboard_recent_drafts" class="postbox">';
 	echo '<h3 class="hndle"><span>' . __('Registration Form details') . '</span></h3>';
@@ -207,7 +208,12 @@ function keypic_conf()
 	echo keypic_get_it($keypic_details_lostpassword['RequestType'], $keypic_details_lostpassword['WeighthEight']) . '</p>';
 	echo '</div>';
 	echo '</div>';
-	echo '<p class="submit"><input type="submit" name="submit" value="' . __('Update options &raquo;') . '" /></p>';
+
+
+// Custom forms here
+
+
+	echo '<p class="submit"><input type="submit" name="input_submit" value="' . __('Update options &raquo;') . '" /></p>';
 	echo '<input type="hidden" name="submit2" value="submit2" />';
 	echo	'</form>';
 }
