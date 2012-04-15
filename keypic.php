@@ -1,13 +1,14 @@
 <?php
 /*
-Plugin Name: Keypic
+Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.6.0
+Version: 0.8.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
 */
+
 /*  Copyright 2010-2011  Keypic LLC  (email : info@keypic.com)
 
     This program is free software; you can redistribute it and/or modify
@@ -25,7 +26,7 @@ License: GPLv2 or later
 */
 
 define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.6.0');
+define('KEYPIC_VERSION', '0.8.0');
 define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('KEYPIC_SPAM_PERCENTAGE', 70);
 define('KEYPIC_HOST', 'ws.keypic.com'); // ws.keypic.com
@@ -36,132 +37,15 @@ if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much 
 
 if(is_admin()){require_once dirname( __FILE__ ) . '/admin.php';}
 
-function getToken($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '', $Quantity = 1)
-{
-	global $Token, $FormID;
-
-	if($Token)
-	{
-		return $Token;
-	}
-	else
-	{
-		$fields['FormID'] = $FormID;
-		$fields['RequestType'] = 'RequestNewToken';
-		$fields['ResponseType'] = '2';
-		$fields['ServerName'] = $_SERVER['SERVER_NAME'];
-		$fields['Quantity'] = $Quantity;
-		$fields['ClientIP'] = $_SERVER['REMOTE_ADDR'];
-		$fields['ClientUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
-		$fields['ClientAccept'] = $_SERVER['HTTP_ACCEPT'];
-		$fields['ClientAcceptEncoding'] = $_SERVER['HTTP_ACCEPT_ENCODING'];
-		$fields['ClientAcceptLanguage'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-		$fields['ClientAcceptCharset'] = $_SERVER['HTTP_ACCEPT_CHARSET'];
-		$fields['ClientHttpReferer'] = $_SERVER['HTTP_REFERER'];
-		$fields['ClientUsername'] = $ClientUsername;
-		$fields['ClientEmailAddress'] = $ClientEmailAddress;
-		$fields['ClientMessage'] = $ClientMessage;
-		$fields['ClientFingerprint'] = $ClientFingerprint;
-
-		$request = sendRequest($fields, KEYPIC_HOST);
-		$response = json_decode($request, true);
-
-		if($response['status'] == 'new_token')
-		{
-			$Token = $response['Token'];
-			return  $response['Token'];
-		}
-	}
-}
-
-function isSpam($ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '')
-{
-	global $Token, $FormID, $spam;
-
-	// TODO: manage it
-	//if($Token == ''){return 'error';}
-
-	$Token = $_POST['Token'];
-	$fields['Token'] = $Token;
-	$fields['FormID'] = $FormID;
-	$fields['RequestType'] = 'RequestValidation';
-	$fields['ResponseType'] = '2';
-	$fields['ServerName'] = $_SERVER['SERVER_NAME'];
-	$fields['ClientIP'] = $_SERVER['REMOTE_ADDR'];
-	$fields['ClientUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
-	$fields['ClientAccept'] = $_SERVER['HTTP_ACCEPT'];
-	$fields['ClientAcceptEncoding'] = $_SERVER['HTTP_ACCEPT_ENCODING'];
-	$fields['ClientAcceptLanguage'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-	$fields['ClientAcceptCharset'] = $_SERVER['HTTP_ACCEPT_CHARSET'];
-	$fields['ClientHttpReferer'] = $_SERVER['HTTP_REFERER'];
-	$fields['ClientUsername'] = $ClientUsername;
-	$fields['ClientEmailAddress'] = $ClientEmailAddress;
-	$fields['ClientMessage'] = $ClientMessage;
-	$fields['ClientFingerprint'] = $ClientFingerprint;
-
-	$request = sendRequest($fields, KEYPIC_HOST);
-	$response = json_decode($request, true);
-
-	if($response['status'] == 'response'){$spam = $response['spam']; return $response['spam'];}
-	else if($response['status'] == 'error'){return $response['error'];}
-}
-
-function reportSpam($FormID, $Token)
-{
-	if($Token == ''){return 'error';}
-	if($FormID == ''){return 'error';}
-
-	$fields['Token'] = $Token;
-	$fields['FormID'] = $FormID;
-	$fields['RequestType'] = 'ReportSpam';
-	$fields['ResponseType'] = '2';
-
-	$request = sendRequest($fields, KEYPIC_HOST);
-	$response = json_decode($request, true);
-	return $response;
-}
-
-// makes a request to the Keypic Web Service
-function sendRequest($fileds, $host, $path = '/', $port = 80)
-{
-	global $wp_version;
-
-	// boundary generation
-	srand((double)microtime()*1000000);
-	$boundary = "---------------------".substr(md5(rand(0,32000)),0,10);
-
-	// Build the header
-	$header = "POST " . $path . " HTTP/1.0\r\n";
-	$header .= "Host: " . $host . "\r\n";
-	$header .= "Content-type: multipart/form-data, boundary=$boundary\r\n";
-	$header .= "User-Agent: WordPress/{$wp_version} | Keypic/" . constant( 'KEYPIC_VERSION' ) . "\r\n";
-
-	$data = '';
-	// attach post vars
-	foreach($fileds AS $index => $value)
-	{
-		$data .="--$boundary\r\n";
-		$data .= "Content-Disposition: form-data; name=\"$index\"\r\n";
-		$data .= "\r\n$value\r\n";
-		$data .="--$boundary\r\n";
-	}
-
-	$header .= "Content-length: " . strlen($data) . "\r\n\r\n";
-
-	$socket = new Socket($host, $port, $header.$data);
-	$socket->send();
-	$return = explode("\r\n\r\n", $socket->getResponse(), 2);
-	return $return[1];
-}
-
 //*********************************************************************************************
 //* init
 //*********************************************************************************************
 
 function keypic_init()
 {
-	global $keypic_details, $FormID, $Token;
+	global $keypic_details, $Token;
 
+	//START back Compatibily code...
 	$FormID = get_option('FormID');
 	if($FormID)
 	{
@@ -169,10 +53,20 @@ function keypic_init()
 		update_option('keypic_details', $keypic_details);
 		delete_option('FormID');
 	}
+	//END back Compatibily code...
 
 	$keypic_details = get_option('keypic_details');
-	$FormID = $keypic_details['FormID'];
+
+
+	if($keypic_details['KEYPIC_VERSION'] != KEYPIC_VERSION)
+	{
+		$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
+		update_option('keypic_details', $keypic_details);
+	}
+
 	$Token = '';
+	Keypic::setFormID($keypic_details['FormID']);
+	Keypic::setUserAgent("User-Agent: WordPress/{$wp_version} | Keypic/" . constant('KEYPIC_VERSION'));
 }
 add_action('init', 'keypic_init');
 
@@ -183,7 +77,7 @@ add_action('init', 'keypic_init');
 function keypic_register_form()
 {
 	global $Token, $keypic_details;
-	$Token = getToken();
+	$Token = Keypic::getToken($Token);
 
 	$keypic_details_register = $keypic_details['register'];
 
@@ -203,8 +97,7 @@ add_action('register_form','keypic_register_form');
 function keypic_register_post($login, $email, $errors)
 {
 	global $Token, $spam;
-
-	$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
+	$spam = Keypic::isSpam($_POST['Token'], $_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
 
 	if(!is_numeric($spam) || $spam > KEYPIC_SPAM_PERCENTAGE)
 	{
@@ -245,7 +138,7 @@ function keypic_remove_old_tokens($old_tokens)
 function keypic_login_form()
 {
 	global $Token, $keypic_details;
-	$Token = getToken();
+	$Token = Keypic::getToken($Token);
 
 	$keypic_details_login = $keypic_details['login'];
 
@@ -267,13 +160,13 @@ function keypic_login_post()
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		$spam = isSpam($_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
+		$spam = Keypic::isSpam($_POST['Token'], $_POST['user_email'], $_POST['user_login'], $ClientMessage = '', $ClientFingerprint = '');
 
 		// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and give back an error
 		if(!is_numeric($spam) || $spam > KEYPIC_SPAM_PERCENTAGE)
 		{
 			remove_action('authenticate', 'wp_authenticate_username_password', 20);
-echo "spam: $spam";
+
 			if(is_numeric($spam)){$error = sprintf(__('This request has %s&#37; of spam'), $spam);}
 			else{$error = __('We are sorry, your Keypic token is not valid');}
 
@@ -298,7 +191,8 @@ function keypic_login_error_shake($shake_codes)
 function keypic_lostpassword_form()
 {
 	global $Token, $keypic_details;
-	$Token = getToken();
+	$Token = Keypic::getToken($Token);
+//	$Token = getToken();
 
 	$keypic_details_lostpassword = $keypic_details['lostpassword'];
 
@@ -328,7 +222,7 @@ add_action('lostpassword_post','keypic_lostpassword_post');
 function keypic_comment_form()
 {
 	global $Token, $keypic_details;
-	$Token = getToken();
+	$Token = Keypic::getToken($Token);
 
 	$keypic_details_comments = $keypic_details['comments'];
 
@@ -347,11 +241,11 @@ add_action('comment_form','keypic_comment_form');
 function keypic_comment_post($id, $comment)
 {
 	global $Token, $FormID, $spam;
-	$spam = isSpam($comment->comment_author_email, $comment->comment_author, $comment->comment_content, $ClientFingerprint = '');
+	$spam = Keypic::isSpam($_POST['Token'], $comment->comment_author_email, $comment->comment_author, $comment->comment_content, $ClientFingerprint = '');
 
 	$keypic_comments = get_option('keypic_comments');
 	$keypic_comments = keypic_remove_old_tokens($keypic_comments);
-	$keypic_comments[$comment->comment_ID] = array('token' => $Token, 'ts' => time(), 'spam' => $spam);
+	$keypic_comments[$comment->comment_ID] = array('token' => $_POST['Token'], 'ts' => time(), 'spam' => $spam);
 	update_option('keypic_comments', $keypic_comments);
 
 	// if spam % is more than KEYPIC_SPAM_PERCENTAGE don't accept it and put it in spam status
@@ -378,8 +272,6 @@ function keypic_manage_comments_custom_column($column, $id)
 
 	if('spam_status' == $column)
 	{
-		//if($FormID == ''){}
-
 		if($comments['spam'])
 		{
 			if($comments['spam'] > 70){echo "<b><a href=\"admin.php?action=keypic_report_spam_and_delete_comment&id=$id\" style=\"color:red;\" onclick=\"return confirm('" . __('Are you sure you want to delete this user?') . "')\">" . sprintf(__('Report SPAM and Delete (spam %s&#37;)'), $comments['spam']) . "</a></b>";}
@@ -403,7 +295,6 @@ function keypic_manage_users_custom_column($empty='', $column_name, $id)
 {
 	global $keypic_users;
 	$users = $keypic_users[$id];
-
 
 	if($users['spam'])
 	{
@@ -483,7 +374,7 @@ function keypic_get_select_weightheight($select_name='', $select_value = '')
 	'300x600' => 'Half Page Ad (300 x 600)'
 	);
 
-	$return .= '<select name="'.$select_name.'">';
+	$return .= '<select name="'.$select_name.'" onChange="submit();">';
 	foreach($options as $k => $v)
 	{
 		if($select_value == $k){$return .= '<option value="'.$k.'" selected="selected">'.$v.'</option>';}
@@ -502,7 +393,7 @@ function keypic_get_select_requesttype($select_name='', $select_value = '')
 	'getiFrame' => 'getiFrame'
 	);
 
-	$return .= '<select name="'.$select_name.'">';
+	$return .= '<select name="'.$select_name.'" onChange="submit();">';
 	foreach($options as $k => $v)
 	{
 		if($select_value == $k){$return .= '<option value="'.$k.'" selected="selected">'.$v.'</option>';}
@@ -514,9 +405,209 @@ function keypic_get_select_requesttype($select_name='', $select_value = '')
 	return $return;
 }
 
-//*********************************************************************************************
-//* Socket class
-//*********************************************************************************************
+
+
+class Keypic
+{
+	private static $Instance;
+	private static $version = '1.2';
+	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.2';
+	private static $host = 'ws.keypic.com';
+	private static $url = '/';
+	private static $port = 80;
+
+	private static $FormID;
+	private static $Token;
+	private static $RequestType;
+	private static $WeightHeight;
+	private static $Debug;
+
+	private function __clone(){}
+
+	public function __construct(){}
+
+	public static function getInstance()
+	{
+		if (!self::$Instance)
+		{
+			self::$Instance = new self();
+		}
+
+		return self::$Instance;
+	}
+
+	public static function setVersion($version)
+	{
+		self::$version = $version;
+	}
+
+	public static function setUserAgent($UserAgent)
+	{
+		self::$UserAgent = $UserAgent;
+	}
+
+	public static function setFormID($FormID)
+	{
+		self::$FormID = $FormID;
+	}
+
+	public static function setDebug($Debug)
+	{
+		self::$Debug = $Debug;
+	}
+
+	// makes a request to the Keypic Web Service
+	public static function sendRequest($fields)
+	{
+		// boundary generation
+		srand((double)microtime()*1000000);
+		$boundary = "---------------------".substr(md5(rand(0,32000)),0,10);
+
+		// Build the header
+		$header = "POST " . self::$url . " HTTP/1.0\r\n";
+		$header .= "Host: " . self::$host . "\r\n";
+		$header .= "Content-type: multipart/form-data, boundary=$boundary\r\n";
+		$header .= self::$UserAgent . "\r\n";
+
+		// attach post vars
+		foreach($fields AS $index => $value)
+		{
+			$data .="--$boundary\r\n";
+			$data .= "Content-Disposition: form-data; name=\"$index\"\r\n";
+			$data .= "\r\n$value\r\n";
+			$data .="--$boundary\r\n";
+		}
+
+		// and attach the file
+//		$data .= "--$boundary\r\n";
+//		$content_file = join("", file($tmp_name));
+//		$data .="Content-Disposition: form-data; name=\"userfile\"; filename=\"$file_name\"\r\n";
+//		$data .= "Content-Type: $content_type\r\n\r\n";
+//		$data .= "$content_file\r\n";
+//		$data .="--$boundary--\r\n";
+
+		$header .= "Content-length: " . strlen($data) . "\r\n\r\n";
+
+		$socket = new Socket(self::$host, self::$port, $header.$data);
+		$socket->send();
+		$return = explode("\r\n\r\n", $socket->getResponse(), 2);
+		return $return[1];
+	}
+
+	public static function getToken($Token, $ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '', $Quantity = 1)
+	{
+		if($Token)
+		{
+			self::$Token = $Token;
+			return self::$Token;
+		}
+		else
+		{
+
+			$fields['FormID'] = self::$FormID;
+			$fields['RequestType'] = 'RequestNewToken'; // 001
+			$fields['ResponseType'] = '2';
+			$fields['ServerName'] = $_SERVER['SERVER_NAME'];
+			$fields['Quantity'] = $Quantity;
+			$fields['ClientIP'] = $_SERVER['REMOTE_ADDR'];
+			$fields['ClientUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
+			$fields['ClientAccept'] = $_SERVER['HTTP_ACCEPT'];
+			$fields['ClientAcceptEncoding'] = $_SERVER['HTTP_ACCEPT_ENCODING'];
+			$fields['ClientAcceptLanguage'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+			$fields['ClientAcceptCharset'] = $_SERVER['HTTP_ACCEPT_CHARSET'];
+			$fields['ClientHttpReferer'] = $_SERVER['HTTP_REFERER'];
+			$fields['ClientUsername'] = $ClientUsername;
+			$fields['ClientEmailAddress'] = $ClientEmailAddress;
+			$fields['ClientMessage'] = $ClientMessage;
+			$fields['ClientFingerprint'] = $ClientFingerprint;
+
+			$response = json_decode(self::sendRequest($fields), true);
+
+			if($response['status'] == 'new_token')
+			{
+				self::$Token = $response['Token'];
+				return  $response['Token'];
+			}
+		}
+	}
+
+	public static function getImage($WeightHeight = null, $Debug = null)
+	{
+		return '<a href="http://' . self::$host . '/?RequestType=getClick&amp;Token=' . self::$Token . '" target="_blank"><img src="http://' . self::$host . '/?RequestType=getImage&amp;Token=' . self::$Token . '&amp;WeightHeight=' . $WeightHeight . '&amp;Debug=' . self::$Debug . '" alt="Form protected by Keypic" /></a>';
+	}
+
+	public static function getiFrame($WeightHeight = null)
+	{
+		if($WeightHeight)
+		{
+			$xy = explode('x', $WeightHeight);
+			$x = (int)$xy[0];
+			$y = (int)$xy[1];
+		}
+		else{$x=88; $y=31;}
+
+		$url = 'http://' . self::$host . '/?RequestType=getiFrame&amp;WeightHeight=' . $WeightHeight . '&amp;Token=' . self::$Token;
+
+
+	return <<<EOT
+<iframe
+src="$url"
+width="$x"
+height="$y"
+frameborder="0"
+style="border: 1px solid #ffffff; background-color: #ffffff;"
+marginwidth="0"
+marginheight="0"
+vspace="0"
+hspace="0"
+allowtransparency="true"
+scrolling="no"><p>Your browser does not support iframes.</p></iframe>
+EOT;
+	}
+
+	public static function isSpam($Token, $ClientEmailAddress = '', $ClientUsername = '', $ClientMessage = '', $ClientFingerprint = '')
+	{
+
+		self::$Token = $Token;
+		$fields['Token'] = self::$Token;
+		$fields['FormID'] = self::$FormID;
+		$fields['RequestType'] = 'RequestValidation'; // 002
+		$fields['ResponseType'] = '2';
+		$fields['ServerName'] = $_SERVER['SERVER_NAME'];
+		$fields['ClientIP'] = $_SERVER['REMOTE_ADDR'];
+		$fields['ClientUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
+		$fields['ClientAccept'] = $_SERVER['HTTP_ACCEPT'];
+		$fields['ClientAcceptEncoding'] = $_SERVER['HTTP_ACCEPT_ENCODING'];
+		$fields['ClientAcceptLanguage'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+		$fields['ClientAcceptCharset'] = $_SERVER['HTTP_ACCEPT_CHARSET'];
+		$fields['ClientHttpReferer'] = $_SERVER['HTTP_REFERER'];
+		$fields['ClientUsername'] = $ClientUsername;
+		$fields['ClientEmailAddress'] = $ClientEmailAddress;
+		$fields['ClientMessage'] = $ClientMessage;
+		$fields['ClientFingerprint'] = $ClientFingerprint;
+
+		$response = json_decode(self::sendRequest($fields), true);
+
+		if($response['status'] == 'response'){return $response['spam'];}
+		else if($response['status'] == 'error'){return $response['error'];}
+	}
+
+	public static function reportSpam($Token)
+	{
+		if($Token == ''){return 'error';}
+		if(self::$FormID == ''){return 'error';}
+
+		$fields['Token'] = $Token;
+		$fields['FormID'] = self::$FormID;
+		$fields['RequestType'] = 'ReportSpam';
+		$fields['ResponseType'] = '2';
+
+		$response = json_decode(self::sendRequest($fields), true);
+		return $response;
+	}
+
+}
+
 class Socket
 {
 	private $host;
@@ -577,6 +668,5 @@ class Socket
 
 	public function getErrorString(){return $this->errorString;}
 }
-
 
 ?>
