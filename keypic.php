@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.8.0
+Version: 0.8.1
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -26,7 +26,7 @@ License: GPLv2 or later
 */
 
 define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.8.0');
+define('KEYPIC_VERSION', '0.8.1');
 define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('KEYPIC_SPAM_PERCENTAGE', 70);
 define('KEYPIC_HOST', 'ws.keypic.com'); // ws.keypic.com
@@ -410,8 +410,8 @@ function keypic_get_select_requesttype($select_name='', $select_value = '')
 class Keypic
 {
 	private static $Instance;
-	private static $version = '1.2';
-	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.2';
+	private static $version = '1.3';
+	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.3';
 	private static $host = 'ws.keypic.com';
 	private static $url = '/';
 	private static $port = 80;
@@ -451,13 +451,23 @@ class Keypic
 		self::$FormID = $FormID;
 	}
 
+	public static function checkFormID($FormID)
+	{
+		$fields['RequestType'] = 'checkFormID';
+		$fields['ResponseType'] = '2';
+		$fields['FormID'] = $FormID;
+
+		$response = json_decode(self::sendRequest($fields), true);
+		return $response;
+	}
+
 	public static function setDebug($Debug)
 	{
 		self::$Debug = $Debug;
 	}
 
 	// makes a request to the Keypic Web Service
-	public static function sendRequest($fields)
+	private static function sendRequest($fields)
 	{
 		// boundary generation
 		srand((double)microtime()*1000000);
