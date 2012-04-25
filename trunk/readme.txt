@@ -2,8 +2,8 @@
 Contributors: Keypic
 Tags: keypic, captcha, captchas, spam, antispam, free, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
-Tested up to: 3.3.0
-Stable tag: 0.8.0
+Tested up to: 3.3.2
+Stable tag: 0.8.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -47,6 +47,9 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 0.8.1 =
+* Enhancement: Merged Keypic PHP class Version 1.3
 
 = 0.8.0 =
 * Enhancement: Select on change in image format changes
