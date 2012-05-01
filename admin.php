@@ -1,5 +1,5 @@
 <?php
-add_action( 'admin_menu', 'keypic_config_page' );
+add_action( 'admin_menu', 'keypic_config_page', 8);
 
 add_action('admin_init', 'keypic_admin_init');
 
@@ -42,10 +42,25 @@ function keypic_admin_init()
 		return;
 	}
 }
+/*
+add_action( 'admin_menu', 'keypic_admin_menu', 8 );
 
+function keypic_admin_menu() {
+	add_menu_page( __( 'Keypic', 'keypic' ), __( 'Keypic', 'keypic' ), WPCF7_ADMIN_READ_CAPABILITY, 'keypic', 'keypic_admin_management_page', wpcf7_plugin_url( 'admin/images/menu-icon.png' ) );
+
+//	add_submenu_page( 'wpcf7', __( 'Edit Contact Forms', 'wpcf7' ), __( 'Edit', 'wpcf7' ),
+//		WPCF7_ADMIN_READ_CAPABILITY, 'wpcf7', 'wpcf7_admin_management_page' );
+}
+*/
 function keypic_config_page()
 {
-	if(function_exists('add_submenu_page')){add_submenu_page('plugins.php', __('Keypic Configuration'), __('Keypic Configuration'), 'manage_options', 'keypic-key-config', 'keypic_conf');}
+	if(function_exists('add_submenu_page'))
+	{
+		add_submenu_page('plugins.php', __('Keypic Configuration'), __('Keypic Configuration'), 'manage_options', 'keypic-key-config', 'keypic_conf');
+		add_menu_page('custom menu title', 'Keypic', 'administrator', 'plugins.php?page=keypic-key-config', '',   KEYPIC_PLUGIN_URL .'/menu-icon.png');
+		//add_menu_page('Keypic Admin', 'Keypic', 'administrator', 'myplugin/myplugin-index.php', '',   plugins_url('admin/images/menu-icon.png'), 6);
+		//add_menu_page( __( 'Keypic', 'keypic' ), __( 'Keypic', 'keypic' ), WPCF7_ADMIN_READ_CAPABILITY, 'keypic-key-config', 'keypic', wpcf7_plugin_url( 'admin/images/menu-icon.png' ) );
+	}
 }
 
 function keypic_plugin_action_links( $links, $file )
@@ -130,8 +145,8 @@ function keypic_conf()
 {
 	global $keypic_details, $ms, $messages;
 
-	//
-	if($_POST['submit1'] == 'submit1')
+	$submit1 = isset($_POST['submit1']) ? $_POST['submit1'] : '';
+	if($submit1 == 'submit1')
 	{
 		$FormID = $_POST['formid'];
 
@@ -154,7 +169,8 @@ function keypic_conf()
 		if($keypic_details['FormID'] == ''){$ms[] = 'key_empty';}
 	}
 
-	if($_POST['submit2'] == 'submit2')
+	$submit2 = isset($_POST['submit2']) ? $_POST['submit2'] : '';
+	if($submit2 == 'submit2')
 	{
 		foreach(plugins_list() as $k => $v)
 		{
@@ -197,17 +213,29 @@ function keypic_conf()
 
 	foreach(plugins_list() as $k => $v)
 	{
-		echo '<div id="dashboard_recent_drafts" class="postbox">';
-		echo '<h3 class="hndle"><span>' . $v['Name'] . '</span></h3>';
-		echo '<div class="inside">';
-		echo 'WeightHeight: <br />';
-		echo keypic_get_select_weightheight($k.'_weightheight', $keypic_details[$k]['WeighthEight']) . '<br />';
-		echo 'RequestType: <br />';
-		echo keypic_get_select_requesttype($k.'_requesttype', $keypic_details[$k]['RequestType']) . '<br />';
-		echo '<p>' . __('content preview') . '<br />';
-		echo keypic_get_it($keypic_details[$k]['RequestType'], $keypic_details[$k]['WeighthEight']) . '</p>';
-		echo '</div>';
-		echo '</div>';
+		if($v['builtin'] == 1)
+		{
+			echo '<div id="dashboard_recent_drafts" class="postbox">';
+			echo '<h3 class="hndle"><span>' . $v['Name'] . '</span></h3>';
+			echo '<div class="inside">';
+			echo 'WeightHeight: <br />';
+			echo keypic_get_select_weightheight($k.'_weightheight', $keypic_details[$k]['WeighthEight']) . '<br />';
+			echo 'RequestType: <br />';
+			echo keypic_get_select_requesttype($k.'_requesttype', $keypic_details[$k]['RequestType']) . '<br />';
+			echo '<p>' . __('content preview') . '<br />';
+			echo keypic_get_it($keypic_details[$k]['RequestType'], $keypic_details[$k]['WeighthEight']) . '</p>';
+			echo '</div>';
+			echo '</div>';
+		}
+		else
+		{
+			echo '<div id="dashboard_recent_drafts" class="postbox">';
+			echo '<h3 class="hndle"><span>' . $v['Name'] . '</span></h3>';
+			echo '<div class="inside">';
+			echo $v['Name'] . ' is enabled and ready to working with Keypic <br />';
+			echo '</div>';
+			echo '</div>';
+		}
 	}
 
 

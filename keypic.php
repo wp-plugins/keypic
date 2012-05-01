@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 0.8.1
+Version: 0.9.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -25,9 +25,14 @@ License: GPLv2 or later
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-define('KEYPIC_PLUGIN_NAME', 'Keypic for Wordpress');
-define('KEYPIC_VERSION', '0.8.1');
-define('KEYPIC_PLUGIN_URL', plugin_dir_url( __FILE__ ));
+if(!defined( 'KEYPIC_PLUGIN_BASENAME')) define('KEYPIC_PLUGIN_BASENAME', plugin_basename(__FILE__));
+if(!defined( 'KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEYPIC_PLUGIN_BASENAME), '/' ));
+if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
+if(!defined( 'KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
+if(!defined( 'KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
+
+
+define('KEYPIC_VERSION', '0.9.0');
 define('KEYPIC_SPAM_PERCENTAGE', 70);
 define('KEYPIC_HOST', 'ws.keypic.com'); // ws.keypic.com
 define('KEYPIC_WEIGHTHEIGHT', ''); // default '88x31'
@@ -43,7 +48,7 @@ if(is_admin()){require_once dirname( __FILE__ ) . '/admin.php';}
 
 function keypic_init()
 {
-	global $keypic_details, $Token;
+	global $wp_version, $keypic_details, $Token;
 
 	//START back Compatibily code...
 	$FormID = get_option('FormID');
@@ -69,6 +74,25 @@ function keypic_init()
 	Keypic::setUserAgent("User-Agent: WordPress/{$wp_version} | Keypic/" . constant('KEYPIC_VERSION'));
 }
 add_action('init', 'keypic_init');
+
+
+//*********************************************************************************************
+//* Loading modules
+//*********************************************************************************************
+add_action( 'plugins_loaded', 'keypic_load_modules', 1 );
+
+function keypic_load_modules() {
+	$dir = KEYPIC_PLUGIN_MODULES_DIR;
+
+	if ( ! ( is_dir( $dir ) && $dh = opendir( $dir ) ) )
+		return false;
+
+	while ( ( $module = readdir( $dh ) ) !== false ) {
+		if ( substr( $module, -4 ) == '.php' )
+			include_once $dir . '/' . $module;
+	}
+}
+
 
 //*********************************************************************************************
 //* Register form
@@ -192,7 +216,6 @@ function keypic_lostpassword_form()
 {
 	global $Token, $keypic_details;
 	$Token = Keypic::getToken($Token);
-//	$Token = getToken();
 
 	$keypic_details_lostpassword = $keypic_details['lostpassword'];
 
@@ -374,7 +397,7 @@ function keypic_get_select_weightheight($select_name='', $select_value = '')
 	'300x600' => 'Half Page Ad (300 x 600)'
 	);
 
-	$return .= '<select name="'.$select_name.'" onChange="submit();">';
+	$return = '<select name="'.$select_name.'" onChange="submit();">';
 	foreach($options as $k => $v)
 	{
 		if($select_value == $k){$return .= '<option value="'.$k.'" selected="selected">'.$v.'</option>';}
@@ -393,7 +416,7 @@ function keypic_get_select_requesttype($select_name='', $select_value = '')
 	'getiFrame' => 'getiFrame'
 	);
 
-	$return .= '<select name="'.$select_name.'" onChange="submit();">';
+	$return = '<select name="'.$select_name.'" onChange="submit();">';
 	foreach($options as $k => $v)
 	{
 		if($select_value == $k){$return .= '<option value="'.$k.'" selected="selected">'.$v.'</option>';}
@@ -479,6 +502,8 @@ class Keypic
 		$header .= "Content-type: multipart/form-data, boundary=$boundary\r\n";
 		$header .= self::$UserAgent . "\r\n";
 
+
+		$data = '';
 		// attach post vars
 		foreach($fields AS $index => $value)
 		{
@@ -525,7 +550,7 @@ class Keypic
 			$fields['ClientAcceptEncoding'] = $_SERVER['HTTP_ACCEPT_ENCODING'];
 			$fields['ClientAcceptLanguage'] = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 			$fields['ClientAcceptCharset'] = $_SERVER['HTTP_ACCEPT_CHARSET'];
-			$fields['ClientHttpReferer'] = $_SERVER['HTTP_REFERER'];
+			if(isset($_SERVER['HTTP_REFERER'])){$fields['ClientHttpReferer'] = $_SERVER['HTTP_REFERER'];}
 			$fields['ClientUsername'] = $ClientUsername;
 			$fields['ClientEmailAddress'] = $ClientEmailAddress;
 			$fields['ClientMessage'] = $ClientMessage;
