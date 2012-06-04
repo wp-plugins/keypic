@@ -8,6 +8,7 @@ add_filter( 'wpcf7_spam', 'keypic_wpcf7_spam' );
 
 function keypic_wpcf7_spam($spam)
 {
+
 	$Token = isset($_POST['Token']) ? $_POST['Token'] : '';
 
 	$email = isset($_POST['your-email']) ? $_POST['your-email'] : '';
@@ -16,14 +17,13 @@ function keypic_wpcf7_spam($spam)
 
 	$spam = Keypic::isSpam($Token, $email, $name, $message, $ClientFingerprint = '');
 
-	if(!is_numeric($spam) || $spam > KEYPIC_SPAM_PERCENTAGE)
+	if(!is_numeric($spam) || $spam > Keypic::getSpamPercentage())
 	{
 		return true; // SMAP
 	}
 
 	return false; // NOT SMAP
 }
-
 
 // Shortcode handler
 if(function_exists('wpcf7_add_shortcode'))
@@ -49,8 +49,9 @@ function keypic_wpcf7_shortcode_handler( $tag )
 	$Token = isset($_POST['Token']) ? $_POST['Token'] : '';
 
 	$html = '<input type="hidden" name="Token" value="' . Keypic::getToken($Token) . '">';
-	if($RequestType == 'getiFrame'){$html .= Keypic::getiFrame($WeightHeight);}
-	else{$html .= Keypic::getImage($WeightHeight);}
+//	if($RequestType == 'getiFrame'){$html .= Keypic::getiFrame($WeightHeight);}
+//	else{$html .= Keypic::getImage($WeightHeight);}
+	$html .= Keypic::getIt($RequestType, $WeightHeight);
 
 	return $html;
 

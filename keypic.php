@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.0.0
+Version: 1.0.1
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.0.0');
+define('KEYPIC_VERSION', '1.0.1');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -45,26 +45,27 @@ function keypic_init()
 {
 	global $wp_version, $keypic_details;
 
-	//START back Compatibily code...
-	$FormID = get_option('FormID');
-	if($FormID)
-	{
-		$keypic_details = array('FormID' => $FormID, 'KEYPIC_VERSION' => KEYPIC_VERSION);
-		update_option('keypic_details', $keypic_details);
-		delete_option('FormID');
-	}
-	//END back Compatibily code...
-
 	$keypic_details = get_option('keypic_details');
+
+	$keypic_version = isset($keypic_details['KEYPIC_VERSION']) ? $keypic_details['KEYPIC_VERSION'] : '0.0.0' ;
+
+	// http://php.net/manual/en/function.version-compare.php
+	// By default, version_compare() returns -1 if the first version is lower than the second, 0 if they are equal, and 1 if the second is lower.
+	if(version_compare(KEYPIC_VERSION, $keypic_version))
+	{
+		$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
+		$keypic_details['login']['enabled'] = 0;
+		$keypic_details['register']['enabled'] = 1;
+		$keypic_details['lostpassword']['enabled'] = 1;
+		$keypic_details['comments']['enabled'] = 1;
+		$keypic_details['contact_form_7']['enabled'] = 1;
+		update_option('keypic_details', $keypic_details);
+	}
+
 //print_r($keypic_details);
 //update_option('keypic_details', $keypic_details);
 //delete_option('keypic_details');
 
-	if($keypic_details['KEYPIC_VERSION'] != KEYPIC_VERSION)
-	{
-		$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
-		update_option('keypic_details', $keypic_details);
-	}
 
 	if($keypic_details['login']['enabled'] == 1)
 	{
@@ -85,7 +86,6 @@ function keypic_init()
 		add_action('lostpassword_post','keypic_lostpassword_post');
 	}
 
-
 	if($keypic_details['comments']['enabled'] == 1)
 	{
 		add_action('comment_form','keypic_comment_form');
@@ -96,7 +96,14 @@ function keypic_init()
 		add_filter('manage_users_custom_column', 'keypic_manage_users_custom_column', 10, 3);
 	}
 
-	Keypic::setFormID($keypic_details['FormID']);
+	if($keypic_details['contact_form_7']['enabled'] == 1)
+	{
+		
+	}
+
+	$FormID = isset($keypic_details['FormID']) ? $keypic_details['FormID'] : '';
+
+	Keypic::setFormID($FormID);
 	Keypic::setUserAgent("User-Agent: WordPress/{$wp_version} | Keypic/" . constant('KEYPIC_VERSION'));
 }
 add_action('init', 'keypic_init');
@@ -179,7 +186,7 @@ function keypic_login_post($user, $username, $password)
 		}
 	}
 }
-//add_filter('authenticate', 'keypic_login_post', 10, 3);
+add_filter('authenticate', 'keypic_login_post', 10, 3); // TODO: used also from Contact Form 7, make it better
 
 
 function keypic_login_error_shake($shake_codes)
