@@ -134,6 +134,8 @@ function keypic_conf()
 {
 	global $keypic_details, $ms, $messages;
 
+	$FormID = isset($keypic_details['FormID']) ? $keypic_details['FormID'] : '' ;
+
 	$submit1 = isset($_POST['submit1']) ? $_POST['submit1'] : '';
 	if($submit1 == 'submit1')
 	{
@@ -155,7 +157,7 @@ function keypic_conf()
 	}
 	else
 	{
-		if($keypic_details['FormID'] == ''){$ms[] = 'key_empty';}
+		if($FormID == ''){$ms[] = 'key_empty';}
 	}
 
 	$submit2 = isset($_POST['submit2']) ? $_POST['submit2'] : '';
@@ -173,10 +175,10 @@ function keypic_conf()
 	}
 	else
 	{
-		if($keypic_details['FormID'] == ''){$ms[] = 'key_empty';}
+		if($FormID == ''){$ms[] = 'key_empty';}
 	}
 
-	echo '<h2>' . __('Keypic Configuration') . '</h2>';
+	echo '<h2>' . __('Keypic Configuration') . ' - Version ' . KEYPIC_VERSION .'</h2>';
 
 	// Form
 	echo	'<form name="formid" action="" method="post" style="margin: auto; width: 750px; ">';
@@ -188,7 +190,7 @@ function keypic_conf()
 		echo '<p style="padding: .5em; background-color: #' . $messages[$m]['color'] . '; color: #fff; font-weight: bold;">' . $messages[$m]['text'] . '</p>';
 	endforeach;
 
-	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $keypic_details['FormID'] . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (' . __('<a href="http://keypic.com/modules/register/">What is this?</a>') . ')</p>';
+	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (' . __('<a href="http://keypic.com/modules/register/">What is this?</a>') . ')</p>';
 
 	if(isset( $invalid_key) && $invalid_key)
 	{
@@ -216,13 +218,17 @@ function keypic_conf()
 
 			if($keypic_details[$k]['enabled'] == 1)
 			{
+				$WeighthEight = isset($keypic_details[$k]['WeighthEight']) ? $keypic_details[$k]['WeighthEight'] : '';
+				$RequestType = isset($keypic_details[$k]['RequestType']) ? $keypic_details[$k]['RequestType'] : '';
+
 				echo 'WeightHeight: <br />';
-				echo keypic_get_select_weightheight($k.'_weightheight', $keypic_details[$k]['WeighthEight']) . '<br />';
+				echo keypic_get_select_weightheight($k.'_weightheight', $WeighthEight) . '<br />';
+	
 				echo 'RequestType: <br />';
-				echo keypic_get_select_requesttype($k.'_requesttype', $keypic_details[$k]['RequestType']) . '<br />';
+				echo keypic_get_select_requesttype($k.'_requesttype', $RequestType) . '<br />';
 	
 				echo '<p>' . __('content preview') . '<br />';
-				echo Keypic::getIt($keypic_details[$k]['RequestType'], $keypic_details[$k]['WeighthEight']) . '</p>';
+				echo Keypic::getIt($RequestType, $WeighthEight) . '</p>';
 			}
 
 			echo '</div>';
@@ -233,7 +239,15 @@ function keypic_conf()
 			echo '<div id="dashboard_recent_drafts" class="postbox">';
 			echo '<h3 class="hndle"><span>' . $v['Name'] . '</span></h3>';
 			echo '<div class="inside">';
-			echo $v['Name'] . ' is enabled and ready to working with Keypic <br />';
+
+			echo 'Enabled?: <br />';
+			echo keypic_get_select_enabled($k.'_enabled', $keypic_details[$k]['enabled']) . '<br />';
+
+			if($keypic_details[$k]['enabled'] == 1)
+			{
+				echo $v['Name'] . ' is enabled and ready to working with Keypic <br />';
+			}
+
 			echo '</div>';
 			echo '</div>';
 		}
