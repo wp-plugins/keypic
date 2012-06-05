@@ -19,6 +19,8 @@ function keypic_wpcf7_spam($spam)
 
 	if(!is_numeric($spam) || $spam > Keypic::getSpamPercentage())
 	{
+		remove_action('authenticate', 'wp_authenticate_username_password', 20); // TODO: make it better...
+
 		return true; // SMAP
 	}
 
