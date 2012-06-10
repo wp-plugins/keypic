@@ -3,7 +3,7 @@ Contributors: Keypic
 Tags: keypic, captcha, captchas, spam, antispam, free, contact, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
 Tested up to: 3.3.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -49,6 +49,9 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.1.0 =
+* Enhancement: Better explanation about Contact Form 7 integration.
 
 = 1.0.2 =
 * Bug Fix: Fixed little bug who inhibit login Form work properly.

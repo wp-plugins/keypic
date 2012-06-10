@@ -246,6 +246,11 @@ function keypic_conf()
 			if($keypic_details[$k]['enabled'] == 1)
 			{
 				echo $v['Name'] . ' is enabled and ready to working with Keypic <br />';
+				echo '<br /><br />';
+				echo '<img src="/wp-content/plugins/keypic/screenshot-contact-form-7-1.png" /> <br />';
+				echo '<img src="/wp-content/plugins/keypic/screenshot-contact-form-7-2.png" /> <br />';
+				echo '<img src="/wp-content/plugins/keypic/screenshot-contact-form-7-3.png" /> <br />';
+
 			}
 
 			echo '</div>';
