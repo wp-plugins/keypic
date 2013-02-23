@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.1.0
+Version: 1.1.1
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
