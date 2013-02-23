@@ -2,8 +2,8 @@
 Contributors: Keypic
 Tags: keypic, captcha, captchas, spam, antispam, free, contact, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
-Tested up to: 3.3.2
-Stable tag: 1.1.0
+Tested up to: 3.5.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -50,6 +50,9 @@ A new version is waiting for next week
 
 == Changelog ==
 
+= 1.1.1 =
+* Enhancement: Updated class to version 1.4
+
 = 1.1.0 =
 * Enhancement: Better explanation about Contact Form 7 integration.
 
@@ -59,46 +62,5 @@ A new version is waiting for next week
 = 1.0.1 =
 * Bug Fix: Fixed little bug who inhibit Contact Form 7 work properly.
 
-
 = 1.0.0 =
 * Enhancement: Now is it possible activate single forms indipendently.
-
-= 0.9.0 =
-* Enhancement: Now Contact Form 7 extension is included in keypic
-* Enhancement: Merged Keypic PHP class Version 1.4
-
-= 0.8.1 =
-* Enhancement: Merged Keypic PHP class Version 1.3
-
-= 0.8.0 =
-* Enhancement: Select on change in image format changes
-* Enhancement: Keypic PHP class completely merged with Wordpress plagin
-* Enhancement: Integration with other Wordpress plagin started
-
-= 0.6.0 =
-* Bug Fix: Some little bugs was fixed.
-* Enhancement: More precise spam detection
-
-= 0.5.0 =
-* Bug Fix: Some little bugs was fixed.
-* Enhancement: Added column in users adiminstration to easily report spam and remove spammers
-* Enhancement: Added column in comments adiminstration to easily report spam and remove spam comments.
-
-= 0.4.0 =
-* Enhancement: Added dropdown menu to choose the format of kepic logo (also 1x1 transparent is allowd)
-* Enhancement: Added dropdown menu to choose Image or iFrame
-
-= 0.3.0 =
-* Bug Fix: Some little bugs was fixed.
-* Enhancement: Added FormID Management.
-* Enhancement: It is no more needed to be registered, Keypic function also without registration, but with some limitations.
-
-= 0.2.1 =
-* Bug Fix: lost admin.php file :| .
-
-= 0.2 =
-* Bug Fix: Return field modified.
-* Enhancement: Added Administration section
-
-= 0.1 = 
-* Initial release
