@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.1.0');
+define('KEYPIC_VERSION', '1.1.1');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -49,17 +49,29 @@ function keypic_init()
 
 	$keypic_version = isset($keypic_details['KEYPIC_VERSION']) ? $keypic_details['KEYPIC_VERSION'] : '0.0.0' ;
 
-	// http://php.net/manual/en/function.version-compare.php
-	// By default, version_compare() returns -1 if the first version is lower than the second, 0 if they are equal, and 1 if the second is lower.
-	if(version_compare(KEYPIC_VERSION, $keypic_version))
+	switch(version_compare(KEYPIC_VERSION, $keypic_version))
 	{
-		$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
-		$keypic_details['login']['enabled'] = 0;
-		$keypic_details['register']['enabled'] = 1;
-		$keypic_details['lostpassword']['enabled'] = 1;
-		$keypic_details['comments']['enabled'] = 1;
-		$keypic_details['contact_form_7']['enabled'] = 1;
-		update_option('keypic_details', $keypic_details);
+		case -1 :
+//			echo "version_compare -1"; // in this case i don't know what to do :) appear user did a downgrade
+		break;
+
+		case 0 :
+//			echo "version_compare 0"; // no changes the installed plugin is not changed
+		break;
+
+		case 1 :
+//			echo "version_compare 1"; // The plugin installed is updated, or it is a fresh installation
+			if($keypic_details['KEYPIC_VERSION'] == '0.0.0')
+			{
+				$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
+				$keypic_details['login']['enabled'] = 0;
+				$keypic_details['register']['enabled'] = 1;
+				$keypic_details['lostpassword']['enabled'] = 1;
+				$keypic_details['comments']['enabled'] = 1;
+				$keypic_details['contact_form_7']['enabled'] = 1;
+				update_option('keypic_details', $keypic_details);
+			}
+		break;
 	}
 
 //print_r($keypic_details);
@@ -519,6 +531,8 @@ class Keypic
 	public static function setSpamPercentage($SpamPercentage){self::$SpamPercentage = $SpamPercentage;}
 
 	public static function setVersion($version){self::$version = $version;}
+
+	public static function getVersion(){return self::$version;}
 
 	public static function setUserAgent($UserAgent){self::$UserAgent = $UserAgent;}
 
