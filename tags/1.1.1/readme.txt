@@ -1,9 +1,9 @@
 === NO CAPTCHA Anti Spam ===
 Contributors: Keypic
-Tags: keypic, captcha, captchas, spam, antispam, free, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
+Tags: keypic, captcha, captchas, spam, antispam, free, contact, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
-Tested up to: 3.3.0
-Stable tag: 0.6.0
+Tested up to: 3.5.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -17,8 +17,10 @@ Keypic protect also your login form from brute force dictionary attachs, your re
 If you want a complete free antispam solution, you don't want to install CAPTCHAs plugins and so on, this is the right choice.
 Is also possible look at live installation at [http://wordpress.keypic.com/](http://wordpress.keypic.com/)
 
-Major new features in Keypic 0.6 include:
+Major new features in Keypic 1.0 include:
 
+* Now is it possible activate single forms indipendently.
+* Contact Form 7 extension is included in keypic.
 * It is no more needed to be registered, Keypic function also without registration, but with some limitations.
 * Check of your FormID in Keypic Configuration
 * Only if you are registered is available the comment status history, so you can easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator
@@ -48,30 +50,17 @@ A new version is waiting for next week
 
 == Changelog ==
 
-= 0.6.0 =
-* Bug Fix: Some little bugs was fixed.
-* Enhancement: More precise spam detection
+= 1.1.1 =
+* Enhancement: Updated class to version 1.4
 
-= 0.5.0 =
-* Bug Fix: Some little bugs was fixed.
-* Enhancement: Added column in users adiminstration to easily report spam and remove spammers
-* Enhancement: Added column in comments adiminstration to easily report spam and remove spam comments.
+= 1.1.0 =
+* Enhancement: Better explanation about Contact Form 7 integration.
 
-= 0.4.0 =
-* Enhancement: Added dropdown menu to choose the format of kepic logo (also 1x1 transparent is allowd)
-* Enhancement: Added dropdown menu to choose Image or iFrame
+= 1.0.2 =
+* Bug Fix: Fixed little bug who inhibit login Form work properly.
 
-= 0.3.0 =
-* Bug Fix: Some little bugs was fixed.
-* Enhancement: Added FormID Management.
-* Enhancement: It is no more needed to be registered, Keypic function also without registration, but with some limitations.
+= 1.0.1 =
+* Bug Fix: Fixed little bug who inhibit Contact Form 7 work properly.
 
-= 0.2.1 =
-* Bug Fix: lost admin.php file :| .
-
-= 0.2 =
-* Bug Fix: Return field modified.
-* Enhancement: Added Administration section
-
-= 0.1 = 
-* Initial release
+= 1.0.0 =
+* Enhancement: Now is it possible activate single forms indipendently.
