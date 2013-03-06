@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.1.2
+Version: 1.1.3
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.1.2');
+define('KEYPIC_VERSION', '1.1.3');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -56,19 +56,32 @@ function keypic_init()
 		break;
 
 		case 0 :
-//			echo "version_compare 0"; // no changes the installed plugin is not changed
+//			echo "version_compare 0"; // no changes, the installed plugin is not changed
 		break;
 
 		case 1 :
 //			echo "version_compare 1"; // The plugin installed is updated, or it is a fresh installation
-			if($keypic_details['KEYPIC_VERSION'] == '0.0.0')
+			if($keypic_version == '0.0.0')
 			{
 				$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
 				$keypic_details['login']['enabled'] = 0;
+				$keypic_details['login']['RequestType'] = 'getImage';
+				$keypic_details['login']['WeighthEight'] = '250x250';
+
 				$keypic_details['register']['enabled'] = 1;
+				$keypic_details['register']['RequestType'] = 'getImage';
+				$keypic_details['register']['WeighthEight'] = '250x250';
+
 				$keypic_details['lostpassword']['enabled'] = 1;
+				$keypic_details['lostpassword']['RequestType'] = 'getImage';
+				$keypic_details['lostpassword']['WeighthEight'] = '250x250';
+
 				$keypic_details['comments']['enabled'] = 1;
+				$keypic_details['comments']['RequestType'] = 'getImage';
+				$keypic_details['comments']['WeighthEight'] = '250x250';
+
 				$keypic_details['contact_form_7']['enabled'] = 1;
+
 				update_option('keypic_details', $keypic_details);
 			}
 		break;
@@ -416,11 +429,11 @@ function keypic_get_select_weightheight($select_name='', $select_value = '')
 {
 
 	$options = array(
-	'' => '',
+//	'' => '',
 //	'1x1' => 'Lead square transparent 1x1 pixel',
-	'336x280' => 'Large rectangle (336 x 280)',
-	'300x250' => 'Medium Rectangle (300 x 250)',
 	'250x250' => 'Square Pop-Up (250 x 250)',
+	'300x250' => 'Medium Rectangle (300 x 250)',
+	'336x280' => 'Large rectangle (336 x 280)',
 	'240x400' => 'Vertical Rectangle (240 x 400)',
 	'180x150' => 'Rectangle (180 x 150)',
 	'300x100' => '3:1 Rectangle (300 x 100)',
