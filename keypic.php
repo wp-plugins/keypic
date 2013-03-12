@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.1.3
+Version: 1.1.4
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.1.3');
+define('KEYPIC_VERSION', '1.1.4');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -448,9 +448,9 @@ function keypic_get_select_weightheight($select_name='', $select_value = '')
 	'120x240' => 'Vertical Banner (120 x 240)',
 	'125x125' => 'Square Button (125 x 125)',
 	'728x90' => 'Leaderboard (728 x 90)',
-	'120x600' => 'Skyscraper (120 x 600)',
-	'160x600' => 'Wide Skyscraper (160 x 600)',
-	'300x600' => 'Half Page Ad (300 x 600)'
+//	'120x600' => 'Skyscraper (120 x 600)',
+//	'160x600' => 'Wide Skyscraper (160 x 600)',
+//	'300x600' => 'Half Page Ad (300 x 600)'
 	);
 
 	$return = '<select name="'.$select_name.'" onChange="submit();">';

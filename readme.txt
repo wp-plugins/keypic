@@ -3,7 +3,7 @@ Contributors: Keypic
 Tags: keypic, captcha, captchas, spam, antispam, free, contact, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -50,8 +50,11 @@ A new version is waiting for next week
 
 == Changelog ==
 
-= 1.1.3 =
+= 1.1.4 =
+* Enhancement: Added initial support for Grunion Contact Form
+* Enhancement: Removed some unused Advertising Formats
 
+= 1.1.3 =
 * Enhancement: Changed plugin bootstrap
 
 = 1.1.2 =
