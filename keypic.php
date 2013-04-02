@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.2.0
+Version: 1.2.1
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.2.0');
+define('KEYPIC_VERSION', '1.2.1');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -66,19 +66,19 @@ function keypic_init()
 				$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
 				$keypic_details['login']['enabled'] = 0;
 				$keypic_details['login']['RequestType'] = 'getScript';
-				$keypic_details['login']['WeighthEight'] = '250x250';
+				$keypic_details['login']['WeighthEight'] = '125x125';
 
 				$keypic_details['register']['enabled'] = 1;
 				$keypic_details['register']['RequestType'] = 'getScript';
-				$keypic_details['register']['WeighthEight'] = '250x250';
+				$keypic_details['register']['WeighthEight'] = '125x125';
 
 				$keypic_details['lostpassword']['enabled'] = 1;
 				$keypic_details['lostpassword']['RequestType'] = 'getScript';
-				$keypic_details['lostpassword']['WeighthEight'] = '250x250';
+				$keypic_details['lostpassword']['WeighthEight'] = '125x125';
 
 				$keypic_details['comments']['enabled'] = 1;
 				$keypic_details['comments']['RequestType'] = 'getScript';
-				$keypic_details['comments']['WeighthEight'] = '250x250';
+				$keypic_details['comments']['WeighthEight'] = '125x125';
 
 				$keypic_details['contact_form_7']['enabled'] = 1;
 
@@ -639,7 +639,7 @@ class Keypic
 		}
 	}
 
-	public static function getIt($RequestType = 'getScript', $WeightHeight = '250x250', $Debug = null)
+	public static function getIt($RequestType = 'getScript', $WeightHeight = '125x125', $Debug = null)
 	{
 		if($RequestType == 'getImage')
 		{

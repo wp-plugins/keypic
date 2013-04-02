@@ -99,8 +99,8 @@ function keypic_tg_pane_captcha( &$contact_form )
 
 Get Image<br />
 <b>[keypic keypic WeightHeight:336x280 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:336x280 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:336x280 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -108,8 +108,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:300x250 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:300x250 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:300x250 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -117,35 +117,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:250x250 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:250x250 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:240x400 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:240x400 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:180x150 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:180x150 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:300x100 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:300x100 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:250x250 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -153,17 +126,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:720x300 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:720x300 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:392x72 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:392x72 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:720x300 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -171,8 +135,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:468x60 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:468x60 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:468x60 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -180,53 +144,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:234x60 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:234x60 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:80x15 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:80x15 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:88x31 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:88x31 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:120x90 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:120x90 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:120x60 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:120x60 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:120x240 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:120x240 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:234x60 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -234,8 +153,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:125x125 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:125x125 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:125x125 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -243,8 +162,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:728x90 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:728x90 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:728x90 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -252,8 +171,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:120x600 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:120x600 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:120x600 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -261,8 +180,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:160x600 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:160x600 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:160x600 RequestType:getScript]</b><br />
 
 </td>
 </tr>
@@ -270,17 +189,8 @@ OR GetiFrame<br />
 <td>
 Get Image<br />
 <b>[keypic keypic WeightHeight:300x600 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:300x600 RequestType:getiFrame]</b><br />
-
-</td>
-</tr>
-<tr>
-<td>
-Get Image<br />
-<b>[keypic keypic WeightHeight:1x1 RequestType:getImage]</b><br />
-OR GetiFrame<br />
-<b>[keypic keypic WeightHeight:1x1 RequestType:getiFrame]</b><br />
+OR getScript<br />
+<b>[keypic keypic WeightHeight:300x600 RequestType:getScript]</b><br />
 
 </td>
 </tr>
