@@ -1,7 +1,6 @@
 === NO CAPTCHA Anti Spam ===
 Contributors: Keypic
-Tags: Akismet, antispam, anti-spam, captcha, buddypress, comment, comments, registration, login, multilingual, security, spam, wordpressmu, wpmu, 
-capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
+Tags: Akismet, antispam, anti-spam, captcha, buddypress, comment, comments, registration, login, multilingual, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
 Tested up to: 3.6.1
 Stable tag: 1.2.2
