@@ -1,8 +1,9 @@
 === NO CAPTCHA Anti Spam ===
 Contributors: Keypic
-Tags: keypic, captcha, captchas, spam, antispam, free, contact, comments, registration, login, secure, form, forms, ad, ads, adv, advertising
+Tags: Akismet, antispam, anti-spam, captcha, buddypress, comment, comments, registration, login, multilingual, security, spam, wordpressmu, wpmu, 
+capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
-Tested up to: 3.5.1
+Tested up to: 3.6.1
 Stable tag: 1.2.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
@@ -10,7 +11,7 @@ Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 Keypic checks your comments against the Keypic Web Service to see if they look like spam or not.
 
 == Description ==
-
+Keypic is not a CAPTCHA provider, we completely remove the concept of CAPTCHA!
 Keypic checks your forms against the Keypic Web Service to see if they look like spam or not and lets you
 review the spam it catches under your blog's "Comments" admin screen.
 Keypic protect also your login form from brute force dictionary attachs, your registration form from unwanted spammers and generally all the forms you can imagine :)
@@ -49,6 +50,9 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.2.2 =
+* Bug Fix: Minor bug fixed
 
 = 1.2.1 =
 * Enhancement: Default getScript method set to 125x125
