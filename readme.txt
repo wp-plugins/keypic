@@ -3,31 +3,35 @@ Contributors: Keypic
 Tags: Akismet, antispam, anti-spam, captcha, buddypress, comment, comments, registration, login, multilingual, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
-Keypic checks your comments against the Keypic Web Service to see if they look like spam or not.
+Keypic checks your blogs comments against the comprehensive Keypic Web Service to see if they look like spam or not.
 
 == Description ==
 Keypic is not a CAPTCHA provider, we completely remove the concept of CAPTCHA!
-Keypic checks your forms against the Keypic Web Service to see if they look like spam or not and lets you
+Keypic checks your forms against the comprehensive Keypic Web Service to see if they look like spam or not and lets you
 review the spam it catches under your blog's "Comments" admin screen.
-Keypic protect also your login form from brute force dictionary attachs, your registration form from unwanted spammers and generally all the forms you can imagine :)
-If you want a complete free antispam solution, you don't want to install CAPTCHAs plugins and so on, this is the right choice.
-Is also possible look at live installation at [http://wordpress.keypic.com/](http://wordpress.keypic.com/)
+Keypic also protects your login form from focused hacking attempts, your registration form from unwanted spammers and most other forms that you insert into your website :)
+If you want a complete free antispam solution and you don't want to install CAPTCHAs plugins or plugins similar to CAPTCHA, this is the right choice for you.
+It is also possible to perform a live installation from http://wordpress.keypic.com/
 
-Major new features in Keypic 1.0 include:
 
-* Now is it possible activate single forms indipendently.
-* Contact Form 7 extension is included in keypic.
-* It is no more needed to be registered, Keypic function also without registration, but with some limitations.
-* Check of your FormID in Keypic Configuration
-* Only if you are registered is available the comment status history, so you can easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator
-* In the same way is possible users status history, so you can easily see which users were caught or cleared by Keypic.
-* If your web host is unable to reach Keypic's servers, the plugin will automatically retry until the connection is back.
+Major new features in Keypic 1.0 include: 
 
-PS: You'll need an [Keypic FormID](http://keypic.com/) to get improved functionality.  Keys are free for every kind of use (It's free and will always be.)
+For Everyone: 
+Registration is no longer needed for Keypic to function, but without registration some limitations apply.
+Activate single forms independently from each other.
+Keypic includes the Contact Form 7 extension in the download.
+Check your FormID in Keypic Configuration.
+If your web host is unable to reach Keypic's servers, the plugin will automatically retry until the connection is restored.
+PS: You'll need an Keypic FormID to get improved functionality.
+Keys are free for every kind of use (It's free and always will be.)
+
+Registered Users: 
+Access to comment status history; Easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator 
+Access to user status history, so you can easily see which users were caught or cleared by Keypic. 
 
 == Installation ==
 
@@ -49,6 +53,9 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.2.3 =
+* Bug Fix: Minor bug fixed
 
 = 1.2.2 =
 * Bug Fix: Minor bug fixed
