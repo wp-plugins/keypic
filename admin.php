@@ -11,8 +11,7 @@ $messages = array(
 	'key_not_valid' => array('color' => 'aaa', 'text' => __('This FormID is NOT valid.')),
 );
 
-$plugins = array
-(
+$plugins = array(
 		// Wordpress builtin plugins
 		'register' => array('Name' => 'Registration Form details', 'builtin' => 1),
 		'login' => array('Name' => 'Login Form details', 'builtin' => 1),
@@ -130,6 +129,86 @@ function plugins_list()
 	return $output;
 }
 
+
+function keypic_courtesy()
+{
+    if (function_exists('get_transient'))
+    {
+        require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+
+        // Before, try to access the data, check the cache.
+        if (false === ($api = get_transient('keypic_info')))
+        {
+            // The cache data doesn't exist or it's expired.
+
+            $api = plugins_api('plugin_information', array('slug' => 'keypic' ));
+            if ( !is_wp_error($api) )
+            {
+                // cache isn't up to date, write this fresh information to it now to avoid the query for xx time.
+                $myexpire = 60 * 15; // Cache data for 15 minutes
+                set_transient('keypic_info', $api, $myexpire);
+            }
+        }
+
+
+        if ( !is_wp_error($api) )
+        {
+	        $plugins_allowedtags = array('a' => array('href' => array(), 'title' => array(), 'target' => array()),
+								        'abbr' => array('title' => array()), 'acronym' => array('title' => array()),
+								        'code' => array(), 'pre' => array(), 'em' => array(), 'strong' => array(),
+								        'div' => array(), 'p' => array(), 'ul' => array(), 'ol' => array(), 'li' => array(),
+								        'h1' => array(), 'h2' => array(), 'h3' => array(), 'h4' => array(), 'h5' => array(), 'h6' => array(),
+								        'img' => array('src' => array(), 'class' => array(), 'alt' => array()));
+
+	        //Sanitize HTML
+	        foreach ( (array)$api->sections as $section_name => $content )
+		        $api->sections[$section_name] = wp_kses($content, $plugins_allowedtags);
+
+	        foreach ( array('version', 'author', 'requires', 'tested', 'homepage', 'downloaded', 'slug') as $key )
+		        $api->$key = wp_kses($api->$key, $plugins_allowedtags);
+
+            if ( ! empty($api->downloaded) )
+            {
+                $return .= sprintf(__('Downloaded %s times', 'keypic'),number_format_i18n($api->downloaded));
+                $return .= '.';
+            }
+        }
+
+		if ( ! empty($api->rating) )
+		{
+            $return .= <<< EOL
+<style type="text/css">
+div.si-star-holder { position: relative; height:19px; width:100px; font-size:19px;}
+div.si-star {height: 100%; position:absolute; top:0px; left:0px; background-color: transparent; letter-spacing:1ex; border:none;}
+.si-star1 {width:20%;} .si-star2 {width:40%;} .si-star3 {width:60%;} .si-star4 {width:80%;} .si-star5 {width:100%;}
+.si-star.si-star-rating {background-color: #fc0;}
+.si-star img{display:block; position:absolute; right:0px; border:none; text-decoration:none;}
+div.si-star img {width:19px; height:19px; border-left:1px solid #fff; border-right:1px solid #fff;}
+.si-notice{background-color:#ffffe0;border-color:#e6db55;border-width:1px;border-style:solid;padding:5px;margin:5px 5px 20px;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
+.fscf_left {clear:left; float:left;}
+.fscf_img {margin:0 10px 10px 0;}
+.fscf_tip {text-align:left; display:none;color:#006B00;padding:5px;}
+</style>
+EOL;
+
+    		$return .= "<div class=\"si-star-holder\" title=\"" . esc_attr(sprintf(__('(Average rating based on %s ratings)', 'keypic'),number_format_i18n($api->num_ratings))) . "\">";
+	    	$return .= "<div class=\"si-star si-star-rating\" style=\"width: " . esc_attr($api->rating) . "px\"></div>";
+		    $return .= "<div class=\"si-star si-star5\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"5 stars\" /></div>";
+    		$return .= "<div class=\"si-star si-star4\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"4 stars\" /></div>";
+	    	$return .= "<div class=\"si-star si-star3\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"3 stars\" /></div>";
+		    $return .= "<div class=\"si-star si-star2\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"2 stars\" /></div>";
+		    $return .= "<div class=\"si-star si-star1\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"1 star\" /></div>";
+		    $return .= "</div>";
+		    $return .= "<small>" . sprintf(__('(Average rating based on %s ratings)', 'keypic'),number_format_i18n($api->num_ratings)) . "</small> <h2><a target=\"_blank\" href=\"http://wordpress.org/support/view/plugin-reviews/keypic\">" . __('Please support Keypic, rate it or write a review, thanks!') . "</a></h2>";
+            $return .= "<br />";
+		}
+
+    }
+
+    return $return;
+}
+
+
 function keypic_conf()
 {
 	global $keypic_details, $ms, $messages;
@@ -178,10 +257,23 @@ function keypic_conf()
 		if($FormID == ''){$ms[] = 'key_empty';}
 	}
 
+	// Form
 	echo '<h2>' . __('Keypic Configuration') . ' - Version ' . KEYPIC_VERSION .'</h2>';
 
-	// Form
-	echo	'<form name="formid" action="" method="post" style="margin: auto; width: 750px; ">';
+	echo '<div id="dashboard_recent_drafts" class="postbox">';
+	echo '<h3 class="hndle"><span>' . __('Guys, Social Matters :)') . '</span></h3>';
+	    echo '<div class="inside">';
+        echo keypic_courtesy();
+	    echo '</div>';
+	echo '</div>';
+
+
+	echo '<div id="dashboard_recent_drafts" class="postbox">';
+	echo '<h3 class="hndle"><span>' . __('Keypic FormID Management') . '</span></h3>';
+	    echo '<div class="inside">';
+
+
+	echo	'<form name="formid" action="" method="post" style="margin: auto; width: 100%; ">';
 
 	echo '<p>' . __('For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> will greatly reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Keypic will learn from the mistakes. If you don\'t have an API FormID yet, you can get one at <a href="http://keypic.com/modules/register/" target="_blank">keypic.com</a>.') . '</p>';
 	echo '<h3><label for="key">' . __('Keypic FormID') . '</label></h3>';
@@ -202,8 +294,14 @@ function keypic_conf()
 	echo '<input type="hidden" name="submit1" value="submit1" />';
 	echo	'</form>';
 
+
+
+	    echo '</div>';
+	echo '</div>';
+
+
 	// Form
-	echo	'<form name="formlist" action="" method="post" style="margin: auto; width: 750px; ">';
+	echo	'<form name="formlist" action="" method="post" style="margin: auto; width: 100%; ">';
 
 	foreach(plugins_list() as $k => $v)
 	{
@@ -245,7 +343,7 @@ function keypic_conf()
 
 			if($keypic_details[$k]['enabled'] == 1)
 			{
-				echo $v['Name'] . ' is enabled and ready to working with Keypic <br />';
+				echo $v['Name'] . ' is enabled and ready to work with Keypic <br />';
 				echo '<br /><br />';
 				echo '<img src="/wp-content/plugins/keypic/screenshot-contact-form-7-1.png" /> <br />';
 				echo '<img src="/wp-content/plugins/keypic/screenshot-contact-form-7-2.png" /> <br />';

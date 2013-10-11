@@ -1,9 +1,9 @@
-=== NO CAPTCHA Anti Spam ===
+=== NO CAPTCHA Anti-Spam ===
 Contributors: Keypic
 Tags: Akismet, antispam, anti-spam, captcha, buddypress, comment, comments, registration, login, multilingual, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.2.5
+Stable tag: 1.3.0
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -53,6 +53,11 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.3.0 =
+* Enhancement: Changed admin Look and Feel
+* Enhancement: Added some promotional text
+* Bug Fix: Minor bug fixed
 
 = 1.2.5 =
 * Bug Fix: Minor bug fixed
