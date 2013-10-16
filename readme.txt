@@ -1,9 +1,9 @@
 === NO CAPTCHA Anti-Spam ===
 Contributors: Keypic
-Tags: Akismet, antispam, anti-spam, captcha, buddypress, comment, comments, registration, login, multilingual, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
+Tags: captcha, akismet, antispam, anti-spam, buddypress, comment, comments, registration, login, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -18,7 +18,7 @@ If you want a complete free antispam solution and you don't want to install CAPT
 It is also possible to perform a live installation from http://wordpress.keypic.com/
 
 
-Major new features in Keypic 1.0 include: 
+Major new features in Keypic 1.3 include: 
 
 For Everyone: 
 Registration is no longer needed for Keypic to function, but without registration some limitations apply.
@@ -35,7 +35,7 @@ Access to user status history, so you can easily see which users were caught or 
 
 == Installation ==
 
-Upload the Keypic plugin to your blog, Activate it, then enter your [Keypic FormID](http://keypic.com/modules/register/) (if you want it, is not obbligatory).
+Upload the Keypic plugin to your blog, Activate it, then [get registered on Keypic website](http://keypic.com/modules/register/) (if you want it, is not obbligatory) and  [get a new FormID](http://keypic.com/modules/forms/).
 
 == Frequently Asked Questions ==
 Ask some questions and we will be happy to answer!
@@ -53,6 +53,9 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.3.2 =
+* Enhancement: Added useful link
 
 = 1.3.1 =
 * Bug Fix: Minor bug fixed
