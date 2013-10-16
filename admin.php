@@ -282,7 +282,7 @@ function keypic_conf()
 		echo '<p style="padding: .5em; background-color: #' . $messages[$m]['color'] . '; color: #fff; font-weight: bold;">' . $messages[$m]['text'] . '</p>';
 	endforeach;
 
-	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (' . __('<a href="http://keypic.com/modules/register/">What is this?</a>') . ')</p>';
+	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (<a href="http://keypic.com/modules/register/" target="_blank">' . __('get registered') . '</a>) or of you are just logged in <a href="http://keypic.com/modules/forms/" target="_blank">' . __('Create a new FormID') . '</a></p>';
 
 	if(isset( $invalid_key) && $invalid_key)
 	{
