@@ -53,6 +53,9 @@ A new version is waiting for next week
 
 == Changelog ==
 
+= 1.3.9 =
+* Bug Fix: Minor bug fixed
+
 = 1.3.8 =
 * Bug Fix: Minor bug fixed
 
