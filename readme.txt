@@ -3,7 +3,7 @@ Contributors: Keypic
 Tags: captcha, akismet, antispam, anti-spam, buddypress, comment, comments, registration, login, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.3.8
+Stable tag: 1.3.10
 License: GPLv2 or later
 
 NO CAPTCHA Anti-Spam. Keypic checks your blogs comments against the comprehensive Keypic Web Service to see if they look like spam or not.
@@ -53,25 +53,10 @@ A new version is waiting for next week
 
 == Changelog ==
 
+= 1.3.10 =
+* Bug Fix: Minor bug fixed
+
 = 1.3.9 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.8 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.7 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.6 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.5 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.4 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.3 =
 * Bug Fix: Minor bug fixed
 
 = 1.3.2 =
