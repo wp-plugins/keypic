@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.3.10
+Version: 1.4.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.3.10');
+define('KEYPIC_VERSION', '1.4.0');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -86,7 +86,7 @@ function keypic_init()
 			}
 		break;
 	}
-
+//print_r(get_option('keypic_comments'));
 //print_r($keypic_details);
 //update_option('keypic_details', $keypic_details);
 //delete_option('keypic_details');
@@ -102,7 +102,7 @@ function keypic_init()
 	{
 		add_action('register_form','keypic_register_form');
 		add_action('register_post','keypic_register_post', 10, 3);
-		add_action( 'user_register', 'keypic_user_register', 10, 1);
+		add_action('user_register', 'keypic_user_register', 10, 1);
 	}
 
 	if($keypic_details['lostpassword']['enabled'] == 1)
@@ -114,7 +114,7 @@ function keypic_init()
 	if($keypic_details['comments']['enabled'] == 1)
 	{
 		add_action('comment_form','keypic_comment_form');
-		add_action( 'wp_insert_comment', 'keypic_comment_post', 10, 2 );
+		add_action('wp_insert_comment', 'keypic_comment_post', 10, 2 );
 		add_filter('manage_edit-comments_columns', 'keypic_manage_edit_comments_columns');
 		add_filter('manage_comments_custom_column', 'keypic_manage_comments_custom_column', 10, 2);
 		add_filter('manage_users_columns', 'keypic_manage_users_columns');
@@ -509,7 +509,7 @@ class Keypic
 	private static $version = '1.5';
 	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.5';
 	private static $SpamPercentage = 70;
-	private static $host = 'ws.keypic.com'; // ws.keypic.com
+	private static $host = 'wsdev.keypic.com'; // ws.keypic.com
 	private static $url = '/';
 	private static $port = 80;
 

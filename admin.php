@@ -65,13 +65,13 @@ add_filter( 'plugin_action_links', 'keypic_plugin_action_links', 10, 2 );
 
 function keypic_report_spam_and_delete_comment()
 {
-	global $keypic_comments, $FormID;
+    $keypic_comments = get_option('keypic_comments');
 
 	if(!(isset($_GET['id']) || (isset($_REQUEST['action']) && 'keypic_report_spam_and_delete_comment' == $_REQUEST['action']))){return;}
 
 	$comment = $keypic_comments[$_GET['id']];
 
-	Keypic::reportSpam($comment['token']);
+    Keypic::reportSpam($comment['token']);
 	wp_delete_comment($_GET['id']);
 
 	wp_redirect( $_SERVER['HTTP_REFERER'] );
@@ -282,7 +282,7 @@ function keypic_conf()
 		echo '<p style="padding: .5em; background-color: #' . $messages[$m]['color'] . '; color: #fff; font-weight: bold;">' . $messages[$m]['text'] . '</p>';
 	endforeach;
 
-	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (<a href="http://keypic.com/modules/register/" target="_blank">' . __('get registered') . '</a>) or if you are just logged in <a href="http://keypic.com/modules/forms/" target="_blank">' . __('Create a new FormID') . '</a></p>';
+	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (<a href="http://keypic.com/modules/register/" target="_blank">' . __('get registered') . '</a>) or of you are just logged in <a href="http://keypic.com/modules/forms/" target="_blank">' . __('Create a new FormID') . '</a></p>';
 
 	if(isset( $invalid_key) && $invalid_key)
 	{
