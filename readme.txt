@@ -3,7 +3,7 @@ Contributors: Keypic
 Tags: captcha, akismet, antispam, anti-spam, buddypress, comment, comments, registration, login, security, spam, wordpressmu, wpmu, capcha, captha, catcha, lost password, match captcha, text captcha, simple captcha
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -53,6 +53,9 @@ Just bring us a [feedback](http://keypic.com/modules/feedback/)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.4.1 =
+* Bug Fix: Minor bug fixed
 
 = 1.4.0 =
 * Bug Fix: Spam Report improved!
