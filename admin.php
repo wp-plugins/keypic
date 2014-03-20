@@ -6,7 +6,7 @@ add_action('admin_init', 'keypic_admin_init');
 $ms = array();
 
 $messages = array(
-	'key_empty' => array('color' => 'aa0', 'text' => sprintf(__('Your FormID is empty (<a href="%s" style="color:#fff">Get your FormID.</a>)'), 'http://keypic.com/modules/register/')),
+	'key_empty' => array('color' => 'aa0', 'text' => sprintf(__('Your FormID is empty, This plugin does not work without FormID, please (<a href="%s" target="_blank" style="color:#fff">Get your FormID.</a>)'), 'http://keypic.com/?action=register')),
 	'key_valid' => array('color' => '4AB915', 'text' => __('This FormID is valid.')),
 	'key_not_valid' => array('color' => 'aaa', 'text' => __('This FormID is NOT valid.')),
 );
@@ -129,7 +129,7 @@ function plugins_list()
 	return $output;
 }
 
-
+/*
 function keypic_courtesy()
 {
     if (function_exists('get_transient'))
@@ -207,7 +207,7 @@ EOL;
 
     return $return;
 }
-
+*/
 
 function keypic_conf()
 {
@@ -245,9 +245,9 @@ function keypic_conf()
 		foreach(plugins_list() as $k => $v)
 		{
 			$RequestType = isset($_POST[$k.'_requesttype']) ? $_POST[$k.'_requesttype'] : '';
-			$WeighthEight = isset($_POST[$k.'_weightheight']) ? $_POST[$k.'_weightheight'] : '';
+			$WidthHeight = isset($_POST[$k.'_widthheight']) ? $_POST[$k.'_widthheight'] : '';
 			$enabled = isset($_POST[$k.'_enabled']) ? $_POST[$k.'_enabled'] : '';
-			$keypic_details[$k] = array('RequestType' => $RequestType, 'WeighthEight' => $WeighthEight, 'enabled' => $enabled);
+			$keypic_details[$k] = array('RequestType' => $RequestType, 'WidthHeight' => $WidthHeight, 'enabled' => $enabled);
 		}
 
 		update_option('keypic_details', $keypic_details);
@@ -259,14 +259,14 @@ function keypic_conf()
 
 	// Form
 	echo '<h2>' . __('Keypic Configuration') . ' - Version ' . KEYPIC_VERSION .'</h2>';
-
+/*
 	echo '<div id="dashboard_recent_drafts" class="postbox">';
 	echo '<h3 class="hndle"><span>' . __('Guys, Social Matters :)') . '</span></h3>';
 	    echo '<div class="inside">';
         echo keypic_courtesy();
 	    echo '</div>';
 	echo '</div>';
-
+*/
 
 	echo '<div id="dashboard_recent_drafts" class="postbox">';
 	echo '<h3 class="hndle"><span>' . __('Keypic FormID Management') . '</span></h3>';
@@ -275,21 +275,21 @@ function keypic_conf()
 
 	echo	'<form name="formid" action="" method="post" style="margin: auto; width: 100%; ">';
 
-	echo '<p>' . __('For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> will greatly reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Keypic will learn from the mistakes. If you don\'t have an API FormID yet, you can get one at <a href="http://keypic.com/modules/register/" target="_blank">keypic.com</a>.') . '</p>';
+	echo '<p>' . __('For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> will greatly reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Keypic will learn from the mistakes. If you don\'t have an API FormID yet, you can get one at <a href="http://keypic.com/?action=register" target="_blank">keypic.com</a>.') . '</p>';
 	echo '<h3><label for="key">' . __('Keypic FormID') . '</label></h3>';
 
 	foreach($ms as $m):
 		echo '<p style="padding: .5em; background-color: #' . $messages[$m]['color'] . '; color: #fff; font-weight: bold;">' . $messages[$m]['text'] . '</p>';
 	endforeach;
 
-	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (<a href="http://keypic.com/modules/register/" target="_blank">' . __('get registered') . '</a>) or of you are just logged in <a href="http://keypic.com/modules/forms/" target="_blank">' . __('Create a new FormID') . '</a></p>';
-
-	if(isset( $invalid_key) && $invalid_key)
+	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (<a href="http://keypic.com/?action=register" target="_blank">' . __('get registered') . '</a>) or if you are just logged in <a href="http://keypic.com/?action=forms" target="_blank">' . __('Create a new FormID') . '</a></p>';
+/*
+	if(isset($invalid_key) && $invalid_key)
 	{
 		echo '<h3>' . __('Why might my key be invalid?') . '</h3>';
 		echo '<p>' . __('This can mean one of two things, either you copied the key wrong or that the plugin is unable to reach the Keypic servers, which is most often caused by an issue with your web host around firewalls or similar.') . '</p>';
 	}
-
+*/
 	echo '<p class="submit"><input type="submit" name="input_submit" value="' . __('Update FormID &raquo;') . '" /></p>';
 	echo '<input type="hidden" name="submit1" value="submit1" />';
 	echo	'</form>';
@@ -316,17 +316,18 @@ function keypic_conf()
 
 			if($keypic_details[$k]['enabled'] == 1)
 			{
-				$WeighthEight = isset($keypic_details[$k]['WeighthEight']) ? $keypic_details[$k]['WeighthEight'] : '';
+				$WidthHeight = isset($keypic_details[$k]['WidthHeight']) ? $keypic_details[$k]['WidthHeight'] : '';
 				$RequestType = isset($keypic_details[$k]['RequestType']) ? $keypic_details[$k]['RequestType'] : '';
 
-				echo 'WeightHeight: <br />';
-				echo keypic_get_select_weightheight($k.'_weightheight', $WeighthEight) . '<br />';
+				echo 'Width Height: <br />';
+				echo keypic_get_select_widthheight($k.'_widthheight', $WidthHeight) . '<br />';
 	
 				echo 'RequestType: <br />';
 				echo keypic_get_select_requesttype($k.'_requesttype', $RequestType) . '<br />';
 	
 				echo '<p>' . __('content preview') . '<br />';
-				echo Keypic::getIt($RequestType, $WeighthEight) . '</p>';
+				if($WidthHeight == '1x1'){echo 'Transparenti Pixel Active!';} // Little Hack :)
+				else{echo Keypic::getIt($RequestType, $WidthHeight) . '</p>';}
 			}
 
 			echo '</div>';
