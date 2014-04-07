@@ -3,7 +3,7 @@ Contributors: Keypic
 Tags: captcha, comments, plugin, spam, antispam, anti-spam, wordpress, widget, post, plugin, admin, posts, sidebar, images, page, ads, adsense, advertising
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -27,6 +27,8 @@ If your web host is unable to reach Keypic's servers, the plugin will automatica
 Access to comment status history; Easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator 
 Access to user status history, so you can easily see which users were caught or cleared by Keypic. 
 
+[youtube http://www.youtube.com/watch?v=E4WGxcYZ4x8]
+
 == Installation ==
 
 Upload the Keypic plugin to your blog, Activate it, then [get registered on Keypic website](http://keypic.com/?action=register) (From version 1.5 is Obligatory!).
@@ -47,6 +49,9 @@ Just bring us a [feedback](http://keypic.com/?action=feedback)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.5.2 =
+* Bug Fix: Minor bug fixed
 
 = 1.5.1 =
 * Bug Fix: Minor bug fixed
