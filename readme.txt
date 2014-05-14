@@ -2,8 +2,8 @@
 Contributors: Keypic
 Tags: captcha, comments, plugin, spam, antispam, anti-spam, wordpress, widget, post, plugin, admin, posts, sidebar, images, page, ads, adsense, advertising
 Requires at least: 3.0
-Tested up to: 3.6.1
-Stable tag: 1.5.3
+Tested up to: 3.9.0
+Stable tag: 1.7.0
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -19,7 +19,8 @@ If you want a complete antispam solution and you don't want to install CAPTCHAs 
 It is also possible to perform a live installation from http://wordpress.keypic.com/
 
 
-Major new features in Keypic 1.5 include: 
+Major new features in Keypic 1.7 include: 
+
 Keypic work only for Registered Users:
 Activate single forms independently from each other.
 Keypic includes the Contact Form 7 extension.
@@ -49,6 +50,12 @@ Just bring us a [feedback](http://keypic.com/?action=feedback)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.7.0 =
+* Enhancement: Integrated new advertising service
+
+= 1.6.0 =
+* Enhancement: New API 1.8
 
 = 1.5.3 =
 * Enhancement: New API 1.7

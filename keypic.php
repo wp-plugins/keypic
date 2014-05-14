@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.5.3
+Version: 1.7.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.5.3');
+define('KEYPIC_VERSION', '1.7.0');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -63,22 +63,24 @@ function keypic_init()
 //			echo "version_compare 1"; // The plugin installed is updated, or it is a fresh installation
 			if($keypic_version == '0.0.0')
 			{
+			    // Set default values
+
 				$keypic_details['KEYPIC_VERSION'] = KEYPIC_VERSION;
 				$keypic_details['login']['enabled'] = 0;
 				$keypic_details['login']['RequestType'] = 'getScript';
-				$keypic_details['login']['WidthHeight'] = '125x125';
+				$keypic_details['login']['WidthHeight'] = '250x250';
 
 				$keypic_details['register']['enabled'] = 1;
 				$keypic_details['register']['RequestType'] = 'getScript';
-				$keypic_details['register']['WidthHeight'] = '125x125';
+				$keypic_details['register']['WidthHeight'] = '250x250';
 
 				$keypic_details['lostpassword']['enabled'] = 1;
 				$keypic_details['lostpassword']['RequestType'] = 'getScript';
-				$keypic_details['lostpassword']['WidthHeight'] = '125x125';
+				$keypic_details['lostpassword']['WidthHeight'] = '250x250';
 
 				$keypic_details['comments']['enabled'] = 1;
 				$keypic_details['comments']['RequestType'] = 'getScript';
-				$keypic_details['comments']['WidthHeight'] = '125x125';
+				$keypic_details['comments']['WidthHeight'] = '336x280';
 
 				$keypic_details['contact_form_7']['enabled'] = 1;
 
@@ -443,7 +445,7 @@ function keypic_get_select_widthheight($select_name='', $select_value = '')
 //	'120x240' => 'Vertical Banner (120 x 240)',
 	'120x600' => 'Skyscraper (120 x 600)',
 	'300x600' => 'Half Page Ad (300 x 600)',
-	'125x125' => 'Square Button (125 x 125)'
+//	'125x125' => 'Square Button (125 x 125)'
 	);
 
 
@@ -462,8 +464,8 @@ function keypic_get_select_widthheight($select_name='', $select_value = '')
 function keypic_get_select_requesttype($select_name='', $select_value = '')
 {
 	$options = array(
-	'getScript' => 'getScript',
-	'getImage' => 'getImage'
+	'getScript' => 'getScript' //,
+//	'getImage' => 'getImage'
 	);
 
 	$return = '<select name="'.$select_name.'" onChange="submit();">';
@@ -500,8 +502,8 @@ function keypic_get_select_enabled($select_name='', $select_value = '')
 class Keypic
 {
 	private static $Instance;
-	private static $version = '1.7';
-	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.7';
+	private static $version = '1.8';
+	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.8';
 	private static $SpamPercentage = 70;
 	private static $host = 'ws.keypic.com';
 	private static $url = '/';
@@ -596,16 +598,22 @@ class Keypic
 		}
 	}
 
-	public static function getIt($RequestType = 'getScript', $WidthHeight = '125x125', $Debug = null)
+	public static function getIt($RequestType = 'getScript', $WidthHeight = '336x280', $Debug = null)
 	{
-		if($RequestType == 'getImage')
-		{
-			return '<a href="http://' . self::$host . '/?RequestType=getClick&amp;Token=' . self::$Token . '" target="_blank"><img src="//' . self::$host . '/?RequestType=getImage&amp;Token=' . self::$Token . '&amp;WidthHeight=' . $WidthHeight . '&amp;PublisherID=' . self::$PublisherID . '" alt="Form protected by Keypic" /></a>';
-		}
-		else
-		{
-			return '<script type="text/javascript" src="//' . self::$host . '/?RequestType=getScript&amp;Token=' . self::$Token . '&amp;WidthHeight=' . $WidthHeight . '&amp;PublisherID=' . self::$PublisherID . '"></script>';
-		}
+        switch($RequestType)
+        {
+            case 'getImage':
+			    return '<a href="http://' . self::$host . '/?RequestType=getClick&amp;Token=' . self::$Token . '" target="_blank"><img src="//' . self::$host . '/?RequestType=getImage&amp;Token=' . self::$Token . '&amp;WidthHeight=' . $WidthHeight . '&amp;PublisherID=' . self::$PublisherID . '" alt="Form protected by Keypic" /></a>';
+                break;
+
+//            case 'getScript':
+            default:
+			    return '<script type="text/javascript" src="//' . self::$host . '/?RequestType=getScript&amp;Token=' . self::$Token . '&amp;WidthHeight=' . $WidthHeight . '&amp;PublisherID=' . self::$PublisherID . '"></script>';
+                break;
+
+
+            
+        }
 	}
 
 	// Is Spam? from 0% to 100%
