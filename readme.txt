@@ -3,7 +3,7 @@ Contributors: Keypic
 Tags: captcha, comments, plugin, spam, antispam, anti-spam, wordpress, widget, post, plugin, admin, posts, sidebar, images, page, ads, adsense, advertising
 Requires at least: 3.0
 Tested up to: 3.9.0
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -50,6 +50,9 @@ Just bring us a [feedback](http://keypic.com/?action=feedback)
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.7.1 =
+* Bug Fix: Minor bug fixed
 
 = 1.7.0 =
 * Enhancement: Integrated new advertising service
