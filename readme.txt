@@ -2,8 +2,8 @@
 Contributors: Keypic
 Tags: captcha, comments, plugin, spam, antispam, anti-spam, wordpress, widget, post, plugin, admin, posts, sidebar, images, page, ads, adsense, advertising
 Requires at least: 3.0
-Tested up to: 3.9.0
-Stable tag: 1.7.4
+Tested up to: 3.9.1
+Stable tag: 1.7.5
 License: GPLv2 or later
 Donate link: http://keypic.com/?tid=homepage_donations_not_needed
 
@@ -40,16 +40,23 @@ Just bring us a [feedback](http://keypic.com/?action=feedback)
 
 == Screenshots ==
 
-1. How Keypic act on comments form.
-2. How Keypic act on login form.
+1. How Keypic act on login form.
+2. How Keypic act on lastpassword.
 3. How Keypic act on register form.
-4. How Keypic act on lastpassword.
+4. How Keypic act on comments form.
 5. How Keypic act on register form in case of spam.
+6. Keypic control panel without FormID.
+7. Keypic control panel with FormID.
+8. Keypic control panel with FormID properly installed.
 
 == Upgrade Notice ==
 A new version is waiting for next week
 
 == Changelog ==
+
+= 1.7.5 =
+* Bug Fix: Minor bug fixed
+* Enhancement: New screen-shots
 
 = 1.7.4 =
 * Bug Fix: Minor bug fixed
