@@ -1,5 +1,5 @@
 === NO CAPTCHA Anti-Spam ===
-Contributors: keypic
+Contributors: keypic, PKMateur, cipy
 Tags: captcha, comments, plugin, spam, antispam, anti-spam, wordpress, widget, post, plugin, admin, posts, sidebar, images, page, ads, adsense, advertising
 Requires at least: 3.0
 Tested up to: 3.9.2
