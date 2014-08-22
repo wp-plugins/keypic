@@ -32,12 +32,20 @@ Access to user status history, so you can easily see which users were caught or 
 
 
 = Translation =
-The following translations are included in the download zip file:
+
 * English
 * More are needed... Please help translate.
 
 If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> for <a href="http://keypic.com/?action=feedback" target="_blank">Keypic Feedback</a> and we'll add it to the plugin.
 You can download the latest version of the program for work with PO and MO files  <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
+
+
+= Technical support =
+
+Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in another languages won't be accepted.
+
+If you notice any bugs in the plugins, you can notify us about it and we'll investigate and fix the issue then. Your request should contain URL of the website, issues description and WordPress admin panel credentials.
+
 
 
 Requirements/Restrictions:
@@ -51,9 +59,11 @@ Requirements/Restrictions:
 
 Upload the Keypic plugin to your blog, Activate it, then [get registered on Keypic website](https://keypic.com/?action=register) (From version 1.5 is Obligatory!).
 
+
 == Frequently Asked Questions ==
 Ask some questions and we will be happy to answer!
 Just bring us a [feedback](http://keypic.com/?action=feedback)
+
 
 == Screenshots ==
 
