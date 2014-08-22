@@ -1,9 +1,10 @@
 === NO CAPTCHA Anti-Spam ===
 Contributors: keypic, PKMateur, cipy
-Tags: captcha, comments, plugin, spam, antispam, anti-spam, wordpress, widget, post, plugin, admin, posts, sidebar, images, page, ads, adsense, advertising
+Author URI: http://keypic.com
+Tags: akismet, captcha, comment, comments, login, anti-spam, spam, security, multilingual, buddypress, bbpress, wpmu, wordpressmu
 Requires at least: 3.0
 Tested up to: 3.9.2
-Stable tag: 1.7.6
+Stable tag: trunk
 License: GPLv2 or later
 
 NO CAPTCHA Anti-Spam. Keypic checks your blogs comments against the comprehensive Keypic Web Service to see if they look like spam or not.
@@ -28,6 +29,23 @@ Access to comment status history; Easily see which comments were caught or clear
 Access to user status history, so you can easily see which users were caught or cleared by Keypic. 
 
 [youtube http://www.youtube.com/watch?v=E4WGxcYZ4x8]
+
+
+= Translation =
+The following translations are included in the download zip file:
+* English
+* More are needed... Please help translate.
+
+If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> for <a href="http://keypic.com/?action=feedback" target="_blank">Keypic Feedback</a> and we'll add it to the plugin.
+You can download the latest version of the program for work with PO and MO files  <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
+
+
+Requirements/Restrictions:
+-------------------------
+ * Works with Wordpress 2.9+, WPMU, and BuddyPress (Wordpress 3.6+ is highly recommended)
+ * PHP5+ is highly recommended
+ 
+ 
 
 == Installation ==
 
@@ -93,78 +111,3 @@ A new version is waiting for next week
 * Enhancement: New API 1.6
 * Enhancement: New Keypic service
 * Enhancement: Registered only users
-
-= 1.4.1 =
-* Bug Fix: Minor bug fixed
-
-= 1.4.0 =
-* Bug Fix: Spam Report improved!
-* Bug Fix: Minor bug fixed
-
-= 1.3.10 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.9 =
-* Bug Fix: Minor bug fixed
-
-
-= 1.3.4 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.3 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.2 =
-* Enhancement: Added useful link
-
-= 1.3.1 =
-* Bug Fix: Minor bug fixed
-
-= 1.3.0 =
-* Enhancement: Changed admin Look and Feel
-* Enhancement: Added some promotional text
-* Bug Fix: Minor bug fixed
-
-= 1.2.5 =
-* Bug Fix: Minor bug fixed
-
-= 1.2.4 =
-* Bug Fix: Minor bug fixed
-
-= 1.2.3 =
-* Bug Fix: Minor bug fixed
-
-= 1.2.2 =
-* Bug Fix: Minor bug fixed
-
-= 1.2.1 =
-* Enhancement: Default getScript method set to 125x125
-
-= 1.2.0 =
-* Enhancement: Updated base Class to 1.5
-* Enhancement: Added new getScript method instead of getiFrame
-
-= 1.1.4 =
-* Enhancement: Added initial support for Grunion Contact Form
-* Enhancement: Removed some unused Advertising Formats
-
-= 1.1.3 =
-* Enhancement: Changed plugin bootstrap
-
-= 1.1.2 =
-* Bug Fix: Minor bug fixed
-
-= 1.1.1 =
-* Enhancement: Updated class to version 1.4
-
-= 1.1.0 =
-* Enhancement: Better explanation about Contact Form 7 integration.
-
-= 1.0.2 =
-* Bug Fix: Fixed little bug who inhibit login Form work properly.
-
-= 1.0.1 =
-* Bug Fix: Fixed little bug who inhibit Contact Form 7 work properly.
-
-= 1.0.0 =
-* Enhancement: Now is it possible activate single forms indipendently.
