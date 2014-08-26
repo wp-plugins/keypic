@@ -1,0 +1,183 @@
+# Copyright (C) 2014 NO CAPTCHA Anti-Spam with Keypic
+# This file is distributed under the same license as the NO CAPTCHA Anti-Spam with Keypic package.
+msgid ""
+msgstr ""
+"Project-Id-Version: NO CAPTCHA Anti-Spam con Keypic 1.8.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/keypic\n"
+"POT-Creation-Date: 2014-08-26 15:20:17+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-08-26 19:11+0100\n"
+"Last-Translator: Emanuele Rogledi <info@keypic.com>\n"
+"Language-Team: LANGUAGE <info@keypic.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: it_IT\n"
+"X-Generator: Poedit 1.6.8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: admin.php:9
+msgid ""
+"Your FormID is empty, This plugin does not work without FormID, please (<a "
+"href=\"%s\" target=\"_blank\" style=\"color:#fff\">Get your FormID.</a>)"
+msgstr ""
+"Il tuo FormID è vuoto, Questo plugin non funziona senza FormID, per favore "
+"(<a href=\"%s\" target=\"_blank\" style=\"color:#fff\">Iscriviti e genera il "
+"tuo FormID.</a>)"
+
+#: admin.php:10
+msgid "This FormID is valid."
+msgstr "Questo FormID è valido."
+
+#: admin.php:11
+msgid "This FormID is NOT valid."
+msgstr "Questo FormID non è valido."
+
+#: admin.php:39
+msgid "Keypic %s requires WordPress 3.0 or higher."
+msgstr "Keypic %s richiede WordPress 3.0 o superiore."
+
+#: admin.php:39
+msgid "Please <a href=\"%s\">upgrade WordPress</a> to a current version</a>."
+msgstr ""
+"Per favore <a href=\"%s\">aggiorna WordPress</a> alla versione corrente</a>."
+
+#: admin.php:54 admin.php:186
+msgid "Keypic Configuration"
+msgstr "Configurazione Keypic"
+
+#: admin.php:63
+msgid "Settings"
+msgstr "Settaggi"
+
+#: admin.php:189
+msgid "Keypic FormID Management"
+msgstr "Gestione FormID di Keypic"
+
+#. Description of the plugin/theme
+#: admin.php:195
+msgid ""
+"For many people, <a href=\"http://keypic.com/\" target=\"_blank\">Keypic</a> "
+"is quite possibly the best way in the world to protect your blog from "
+"comment and trackback spam. It keeps your site protected from spam even "
+"while you sleep. To get started: <br /> 1) Click the \"Activate\" link to "
+"the left of this description, <br /> 2) <a href=\"http://keypic.com/?"
+"action=register\" target=\"_blank\">Sign up for a FormID</a>, and <br /> 3) "
+"Go to your Keypic configuration page, and save FormID key."
+msgstr ""
+"Per molta gente, <a href=\"http://keypic.com/\" target=\"_blank\">Keypic</a> "
+"è probabilmente il miglior modo  al mondo di proteggere il tuo blog dai "
+"commenti spam. tiene il tuo sito protetto dallo spam anche quando dormi. per "
+"iniziare: <br /> 1) Clicca \"Attiva\" link di fianco a questa descrizione, "
+"<br /> 2) <a href=\"http://keypic.com/?action=register\" target=\"_blank"
+"\">Registrati per avere un FormID</a>, e <br /> 3) Vai alla pagina di "
+"configurazione di Keypic sul tuo blog, e salva il FormID."
+
+#: admin.php:196
+msgid "Keypic FormID"
+msgstr "Keypic FormID"
+
+#: admin.php:202
+msgid "get registered"
+msgstr "Inizia"
+
+#: admin.php:202
+msgid "Create a new FormID"
+msgstr "Crea un nuovo FormID"
+
+#: admin.php:204
+msgid "Update FormID &raquo;"
+msgstr "Aggiorna il FormID &raquo;"
+
+#: admin.php:239
+msgid "content preview"
+msgstr "revisiona il contenuto"
+
+#: admin.php:272
+msgid "Update options &raquo;"
+msgstr "Aggiorna opzioni &raquo;"
+
+#: admin.php:300
+msgid "Activate your Keypic account"
+msgstr "Attiva il tuo account Keypic"
+
+#: admin.php:303
+msgid ""
+"<strong>Almost done</strong> - activate your account and say goodbye to "
+"comment spam"
+msgstr ""
+"<strong>Quasi finito</strong> - attiva il tuo cacount e dì addio ai commenti "
+"spam"
+
+#: keypic.php:201
+msgid "This request has %s&#37; of spam"
+msgstr "Questa richiesta ha %s&#37; di spam"
+
+#: keypic.php:202
+msgid "We are sorry, your Keypic token is not valid"
+msgstr "Ci dispiace, il tuo token Keypic non è valido"
+
+#: keypic.php:370 keypic.php:398
+msgid "Keypic SPAM Status"
+msgstr "Stato SPAM di Keypic"
+
+#: keypic.php:387 keypic.php:388 keypic.php:414 keypic.php:415
+msgid "Are you sure you want to delete this user?"
+msgstr "Sei sicuro che vuoi cancellare questo utente?"
+
+#: keypic.php:387 keypic.php:388 keypic.php:414 keypic.php:415
+msgid "Report SPAM and Delete (spam %s&#37;)"
+msgstr "Segnala come SPAM e rimuovi (spam %s&#37;)"
+
+#. Author of the plugin/theme
+#: modules/contact-form-7.php:69
+msgid "Keypic"
+msgstr "Keypic"
+
+#: modules/contact-form-7.php:82
+msgid "Note: To use Keypic, you need Keypic plugin installed."
+msgstr "Nota: Per usare Keypic, bisogna installare il plugin di Keypic"
+
+#: modules/contact-form-7.php:88
+msgid "Image settings"
+msgstr "Settaggi Immagine"
+
+#: modules/contact-form-7.php:94
+msgid "If you see this page it means that you have Keypic plugin installed"
+msgstr "Se vedi questa pagina significa che hai il plugin di Keypic installato"
+
+#: modules/contact-form-7.php:96
+msgid ""
+"This is a preliminary version, in this version we support only the following "
+"field names: your-email, your-name , your-message"
+msgstr ""
+"Questa è una versione preliminare, in questa versione supportiamo solo i "
+"seguenti campi: your-email, your-name , your-message"
+
+#: modules/contact-form-7.php:98
+msgid "Copy this code and paste it into the form left."
+msgstr "Copia questo codice e incollalo nel campo a sinistra."
+
+#: modules/contact-form-7.php:212
+msgid "Keypic judged the sending activity as spamming"
+msgstr "Keypic ha giudicato l'attività d'invio come spamming"
+
+#: modules/contact-form-7.php:213
+msgid ""
+"Failed to send your message. Please try later or contact the administrator "
+"by another method."
+msgstr ""
+"L'invio del messaggio è fallito. Per favore prova dopo o contatta "
+"l'amministratore in un'altro modo."
+
+#. Plugin Name of the plugin/theme
+msgid "NO CAPTCHA Anti-Spam with Keypic"
+msgstr "NO CAPTCHA Anti-Spam con Keypic"
+
+#. Plugin URI of the plugin/theme
+msgid "http://keypic.com/"
+msgstr "http://keypic.com/"
+
+#. Author URI of the plugin/theme
+msgid "http://keypic.com"
+msgstr "http://keypic.com"
