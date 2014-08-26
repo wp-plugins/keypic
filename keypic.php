@@ -2,8 +2,8 @@
 /*
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
-Description: Keypic is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>.
-Version: 1.7.6
+Description: For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> is quite possibly the best way in the world to protect your blog from comment and trackback spam. It keeps your site protected from spam even while you sleep. To get started: <br /> 1) Click the "Activate" link to the left of this description, <br /> 2) <a href="http://keypic.com/?action=register" target="_blank">Sign up for a FormID</a>, and <br /> 3) Go to your Keypic configuration page, and save FormID key.
+Version: 1.8.0
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -30,7 +30,7 @@ if(!defined('KEYPIC_PLUGIN_NAME')) define('KEYPIC_PLUGIN_NAME', trim(dirname(KEY
 if(!defined('KEYPIC_PLUGIN_DIR')) define('KEYPIC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/' . KEYPIC_PLUGIN_NAME);
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
-define('KEYPIC_VERSION', '1.7.6');
+define('KEYPIC_VERSION', '1.8.0');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -502,8 +502,8 @@ function keypic_get_select_enabled($select_name='', $select_value = '')
 class Keypic
 {
 	private static $Instance;
-	private static $version = '1.8';
-	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.8';
+	private static $version = '1.9';
+	private static $UserAgent = 'User-Agent: Keypic PHP5 Class, Version: 1.9';
 	private static $SpamPercentage = 70;
 	private static $host = 'ws.keypic.com';
 	private static $url = '/';
@@ -546,6 +546,8 @@ class Keypic
 	public static function setUserAgent($UserAgent){self::$UserAgent = $UserAgent;}
 
 	public static function setFormID($FormID){self::$FormID = $FormID;}
+
+	public static function getFormID(){return self::$FormID;}
 
 	public static function setPublisherID($PublisherID){self::$PublisherID = $PublisherID;}
 

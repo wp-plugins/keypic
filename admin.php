@@ -1,5 +1,5 @@
 <?php
-add_action( 'admin_menu', 'keypic_config_page', 8);
+add_action('admin_menu', 'keypic_config_page', 8);
 
 add_action('admin_init', 'keypic_admin_init');
 
@@ -28,6 +28,9 @@ function keypic_admin_init()
 
 	// all admin functions are disabled in old versions
 
+    
+    //add_action( 'admin_menu', array( 'Akismet_Admin', 'admin_menu' ), 5 ); # Priority 5, so it's called before Jetpack's admin_menu.
+
 	if(!function_exists('is_multisite') && version_compare($wp_version, '3.0', '<' ))
 	{
 		function keypic_version_warning()
@@ -40,6 +43,8 @@ function keypic_admin_init()
 		add_action('admin_notices', 'keypic_version_warning');
 		return;
 	}
+
+    display_notice();
 }
 
 function keypic_config_page()
@@ -129,86 +134,6 @@ function plugins_list()
 	return $output;
 }
 
-/*
-function keypic_courtesy()
-{
-    if (function_exists('get_transient'))
-    {
-        require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
-
-        // Before, try to access the data, check the cache.
-        if (false === ($api = get_transient('keypic_info')))
-        {
-            // The cache data doesn't exist or it's expired.
-
-            $api = plugins_api('plugin_information', array('slug' => 'keypic' ));
-            if ( !is_wp_error($api) )
-            {
-                // cache isn't up to date, write this fresh information to it now to avoid the query for xx time.
-                $myexpire = 60 * 15; // Cache data for 15 minutes
-                set_transient('keypic_info', $api, $myexpire);
-            }
-        }
-
-
-        if ( !is_wp_error($api) )
-        {
-	        $plugins_allowedtags = array('a' => array('href' => array(), 'title' => array(), 'target' => array()),
-								        'abbr' => array('title' => array()), 'acronym' => array('title' => array()),
-								        'code' => array(), 'pre' => array(), 'em' => array(), 'strong' => array(),
-								        'div' => array(), 'p' => array(), 'ul' => array(), 'ol' => array(), 'li' => array(),
-								        'h1' => array(), 'h2' => array(), 'h3' => array(), 'h4' => array(), 'h5' => array(), 'h6' => array(),
-								        'img' => array('src' => array(), 'class' => array(), 'alt' => array()));
-
-	        //Sanitize HTML
-	        foreach ( (array)$api->sections as $section_name => $content )
-		        $api->sections[$section_name] = wp_kses($content, $plugins_allowedtags);
-
-	        foreach ( array('version', 'author', 'requires', 'tested', 'homepage', 'downloaded', 'slug') as $key )
-		        $api->$key = wp_kses($api->$key, $plugins_allowedtags);
-
-            if ( ! empty($api->downloaded) )
-            {
-                $return .= sprintf(__('Downloaded %s times', 'keypic'),number_format_i18n($api->downloaded));
-                $return .= '.';
-            }
-        }
-
-		if ( ! empty($api->rating) )
-		{
-            $return .= <<< EOL
-<style type="text/css">
-div.si-star-holder { position: relative; height:19px; width:100px; font-size:19px;}
-div.si-star {height: 100%; position:absolute; top:0px; left:0px; background-color: transparent; letter-spacing:1ex; border:none;}
-.si-star1 {width:20%;} .si-star2 {width:40%;} .si-star3 {width:60%;} .si-star4 {width:80%;} .si-star5 {width:100%;}
-.si-star.si-star-rating {background-color: #fc0;}
-.si-star img{display:block; position:absolute; right:0px; border:none; text-decoration:none;}
-div.si-star img {width:19px; height:19px; border-left:1px solid #fff; border-right:1px solid #fff;}
-.si-notice{background-color:#ffffe0;border-color:#e6db55;border-width:1px;border-style:solid;padding:5px;margin:5px 5px 20px;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
-.fscf_left {clear:left; float:left;}
-.fscf_img {margin:0 10px 10px 0;}
-.fscf_tip {text-align:left; display:none;color:#006B00;padding:5px;}
-</style>
-EOL;
-
-    		$return .= "<div class=\"si-star-holder\" title=\"" . esc_attr(sprintf(__('(Average rating based on %s ratings)', 'keypic'),number_format_i18n($api->num_ratings))) . "\">";
-	    	$return .= "<div class=\"si-star si-star-rating\" style=\"width: " . esc_attr($api->rating) . "px\"></div>";
-		    $return .= "<div class=\"si-star si-star5\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"5 stars\" /></div>";
-    		$return .= "<div class=\"si-star si-star4\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"4 stars\" /></div>";
-	    	$return .= "<div class=\"si-star si-star3\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"3 stars\" /></div>";
-		    $return .= "<div class=\"si-star si-star2\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"2 stars\" /></div>";
-		    $return .= "<div class=\"si-star si-star1\"><img src=\"" . WP_PLUGIN_URL . "/si-captcha-for-wordpress/star.png\" alt=\"1 star\" /></div>";
-		    $return .= "</div>";
-		    $return .= "<small>" . sprintf(__('(Average rating based on %s ratings)', 'keypic'),number_format_i18n($api->num_ratings)) . "</small> <h2><a target=\"_blank\" href=\"http://wordpress.org/support/view/plugin-reviews/keypic\">" . __('Please support Keypic, rate it or write a review, thanks!') . "</a></h2>";
-            $return .= "<br />";
-		}
-
-    }
-
-    return $return;
-}
-*/
-
 function keypic_conf()
 {
 	global $keypic_details, $ms, $messages;
@@ -259,14 +184,6 @@ function keypic_conf()
 
 	// Form
 	echo '<h2>' . __('Keypic Configuration') . ' - Version ' . KEYPIC_VERSION .'</h2>';
-/*
-	echo '<div id="dashboard_recent_drafts" class="postbox">';
-	echo '<h3 class="hndle"><span>' . __('Guys, Social Matters :)') . '</span></h3>';
-	    echo '<div class="inside">';
-        echo keypic_courtesy();
-	    echo '</div>';
-	echo '</div>';
-*/
 
 	echo '<div id="dashboard_recent_drafts" class="postbox">';
 	echo '<h3 class="hndle"><span>' . __('Keypic FormID Management') . '</span></h3>';
@@ -275,7 +192,7 @@ function keypic_conf()
 
 	echo	'<form name="formid" action="" method="post" style="margin: auto; width: 100%; ">';
 
-	echo '<p>' . __('For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> will greatly reduce or even completely eliminate the comment and trackback spam you get on your site. If one does happen to get through, simply mark it as "spam" on the moderation screen and Keypic will learn from the mistakes. If you don\'t have an API FormID yet, you can get one at <a href="http://keypic.com/?action=register" target="_blank">keypic.com</a>.') . '</p>';
+	echo '<p>' . __('For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> is quite possibly the best way in the world to protect your blog from comment and trackback spam. It keeps your site protected from spam even while you sleep. To get started: <br /> 1) Click the "Activate" link to the left of this description, <br /> 2) <a href="http://keypic.com/?action=register" target="_blank">Sign up for a FormID</a>, and <br /> 3) Go to your Keypic configuration page, and save FormID key.') . '</p>';
 	echo '<h3><label for="key">' . __('Keypic FormID') . '</label></h3>';
 
 	foreach($ms as $m):
@@ -283,13 +200,7 @@ function keypic_conf()
 	endforeach;
 
 	echo '<p><input id="key" name="formid" type="text" size="32" maxlength="32" value="' . $FormID . '" style="font-family: \'Courier New\', Courier, mono; font-size: 1.5em;" /> (<a href="http://keypic.com/?action=register" target="_blank">' . __('get registered') . '</a>) or if you are just logged in <a href="http://keypic.com/?action=forms" target="_blank">' . __('Create a new FormID') . '</a></p>';
-/*
-	if(isset($invalid_key) && $invalid_key)
-	{
-		echo '<h3>' . __('Why might my key be invalid?') . '</h3>';
-		echo '<p>' . __('This can mean one of two things, either you copied the key wrong or that the plugin is unable to reach the Keypic servers, which is most often caused by an issue with your web host around firewalls or similar.') . '</p>';
-	}
-*/
+
 	echo '<p class="submit"><input type="submit" name="input_submit" value="' . __('Update FormID &raquo;') . '" /></p>';
 	echo '<input type="hidden" name="submit1" value="submit1" />';
 	echo	'</form>';
@@ -361,6 +272,38 @@ function keypic_conf()
 	echo '<p class="submit"><input type="submit" name="input_submit" value="' . __('Update options &raquo;') . '" /></p>';
 	echo '<input type="hidden" name="submit2" value="submit2" />';
 	echo	'</form>';
+}
+
+function display_notice()
+{
+    global $hook_suffix;
+
+//	if( $hook_suffix == 'plugins.php' && !Keypic::getFormID() )
+	if( !Keypic::getFormID() )
+	{
+        display_api_key_warning();
+    }
+
+}
+
+function display_api_key_warning()
+{
+?><div class="updated" style="padding: 0; margin: 0; border: none; background: none;">
+	<style type="text/css">
+.keypic_activate{min-width:825px;border:1px solid #4F800D;padding:5px;margin:15px 0;background:#83AF24;background-image:-webkit-gradient(linear,0% 0,80% 100%,from(#83AF24),to(#4F800D));background-image:-moz-linear-gradient(80% 100% 120deg,#4F800D,#83AF24);-moz-border-radius:3px;border-radius:3px;-webkit-border-radius:3px;position:relative;overflow:hidden}.keypic_activate .aa_a{position:absolute;right:10px;font-size:80px;color:#769F33;font-family:Georgia, "Times New Roman", Times, serif;z-index:1}.keypic_activate .aa_button{font-weight:bold;border:1px solid #029DD6;border-top:1px solid #06B9FD;font-size:15px;text-align:center;padding:9px 0 8px 0;color:#FFF;background:#029DD6;background-image:-webkit-gradient(linear,0% 0,0% 100%,from(#029DD6),to(#0079B1));background-image:-moz-linear-gradient(0% 100% 90deg,#0079B1,#029DD6);-moz-border-radius:2px;border-radius:2px;-webkit-border-radius:2px}.keypic_activate .aa_button:hover{text-decoration:none !important;border:1px solid #029DD6;border-bottom:1px solid #00A8EF;font-size:15px;text-align:center;padding:9px 0 8px 0;color:#F0F8FB;background:#0079B1;background-image:-webkit-gradient(linear,0% 0,0% 100%,from(#0079B1),to(#0092BF));background-image:-moz-linear-gradient(0% 100% 90deg,#0092BF,#0079B1);-moz-border-radius:2px;border-radius:2px;-webkit-border-radius:2px}.keypic_activate .aa_button_border{border:1px solid #006699;-moz-border-radius:2px;border-radius:2px;-webkit-border-radius:2px;background:#029DD6;background-image:-webkit-gradient(linear,0% 0,0% 100%,from(#029DD6),to(#0079B1));background-image:-moz-linear-gradient(0% 100% 90deg,#0079B1,#029DD6)}.keypic_activate .aa_button_container{cursor:pointer;display:inline-block;background:#DEF1B8;padding:5px;-moz-border-radius:2px;border-radius:2px;-webkit-border-radius:2px;width:266px}.keypic_activate .aa_description{position:absolute;top:22px;left:285px;margin-left:25px;color:#E5F2B1;font-size:15px;z-index:1000}.keypic_activate .aa_description strong{color:#FFF;font-weight:normal}
+	</style>
+	<form name="keypic_activate" action="plugins.php?page=keypic-key-config" method="POST">
+		<div class="keypic_activate">
+			<div class="aa_a">Keypic</div>
+			<div class="aa_button_container" onclick="document.keypic_activate.submit();">
+				<div class="aa_button_border">
+					<div class="aa_button"><?php esc_html_e('Activate your Keypic account', 'keypic');?></div>
+				</div>
+			</div>
+			<div class="aa_description"><?php _e('<strong>Almost done</strong> - activate your account and say goodbye to comment spam', 'keypic');?></div>
+		</div>
+	</form>
+</div><?php
 }
 
 
