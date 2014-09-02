@@ -1,74 +1,64 @@
 === Anti Spam Protection without CAPTCHA powered by Keypic ===
 Contributors: keypic, PKMateur, cipy
 Author URI: http://keypic.com
-Tags: Akismet, anti-spam, antispam, anti spam protection, bbPress, buddypress, captcha, cf7, comment, comments, comment spam, contact form protection, contact form 7, form protection, login, login protection, security, signup protection, spam, spam prevention, spammers, web form protection, wordpress, keypic
+Tags: Akismet, anti-spam, antispam, anti spam protection, bbPress, buddypress, captcha, cf7, comment, comments, comment spam, comment spam prevention, contact form protection, contact form 7, form protection, keypic, login, login protection, security, signup protection, spam, spam comments, spam prevention, spammers, web form protection, wordpress, keypic
 Requires at least: 3.0
 Tested up to: 3.9.2
 Stable tag: trunk
 License: GPLv2 or later
 
-Anti Spam Protection without CAPTCHA. Keypic checks your blogs comments against the comprehensive Keypic Web Service to see if they look like spam or not.
+Comment Spam Prevention without CAPTCHA. No CAPTCHA, No SPAM! 
 
 == Description ==
 
-No CAPTCHA, No SPAM! Delivering more reliable anti spam protection, making your website more accessible.
-Keypic delivers cloud anti spam protection technology and you do not need to use CAPTCHA plugins anymore.
-By the way, your users will appreciate it very much.
-
+Keypic is the alternative to CAPTCHA. Keypic stands for safe Internet and accessibility. 
+And without CAPTCHA. Your users will appreciate it very much.
 
 [youtube http://www.youtube.com/watch?v=E4WGxcYZ4x8]
 
+For you: no spam registrations, no spam comments, no spam submitted through contact forms, no spammers and no spam bots and more... Just a strong anti spam protection and growing User Engagement.
 
-No unintelligible words, no silly questions, no riddles, no puzzles, no counting objects, no math, no wasting time, no spammers and no spam bots. Keypic takes care of your security. Keypic is the alternative to CAPCTHA. Keypic stands for safe Internet and accessibility.
+For your users: no unintelligible words, no silly questions, no riddles, no puzzles, no counting objects, no math, no wasting time... Just a positive User Experience.
+Keypic takes care of your security.
 
+Providing more reliable anti spam protection and making your website more accessible Keypic delivers cloud anti spam protection technology and you do not need to use CAPTCHA plugins anymore.
 
-= Keypic anti spam features =
+= Keypic Anti Spam Features =
 
-* Prevents all spammers' activity
-* Prevents spam bots comments
-* Prevents spam bots signups
-* Prevents spam contact forms
-* Prevents spam trackbacks
-
-Alongside with full anti spam protection you get User Engagement and Conversion Rate growing because your users do not need to suffer from CAPTCHA and your website becomes friendlier to users with disabilities.
-
-
-= Keypic Anti Spam Use Cases =
-
-
-Keypic Anti Spam protects
+Keypic Anti Spam protects:
 
 * signup and login forms from focused hacking attempts;
 * registration forms from unwanted spammers and spam bots;
 * payment forms from robots;
-* all other forms that you insert into your website.
+* all other forms that you put in your website.
 
-
-Keypic Anti Spam prevents
+Keypic Anti Spam prevents any spammers and spam bots activity:
 
 * spam comments
+* spam signups
 * spam registrations
 * spam contact messages
+* spam trackbacks
 
+Alongside with full anti spam protection you get User Engagement and Conversion Rate growing because your users do not suffer from CAPTCHA and your website becomes friendlier to users with disabilities.
 
 = Keypic is the Alternative to CAPTCHA =
 
-If you are looking for a complete anti spam protection and don't want to install plugins based on CAPTCHA technology.
-Keypic is the right choice for you.
+If you are looking for a complete Anti Spam Protection and don't want to install plugins based on CAPTCHA technology Keypic is the right choice for you.
 It is also possible to perform a live installation from [wordpress.keypic.com http://wordpress.keypic.com/]
 
 
 = Use Keypic Anti Spam Protection for Free and Get Paid =
 
-You can start using Keypic Anti Spam Protection for free.
+You can use Keypic Anti Spam Protection for free.
 In this case we put an ad banner in the form and every time when someone sees that ad you get paid.
 If you do not want to show third party ads then you can subscribe to one of our packages relevant to your needs.
-In this case you’ll get a trasparent pixel, invisible for human's eyes.
+In this case you'll get a trasparent pixel, invisible for human's eyes.
 
 = CAUTION! =
 
 Keypic Anti Spam Protection works only for Registered Users.
-Do not change code otherwise we do not guarantee full spam prevention.
+Do not change code otherwise spam prevention is not guaranteed.
 
 Activate single forms independently from each other.
 Keypic Anti Spam Protection plugin includes the Contact Form 7 extension.
@@ -78,14 +68,13 @@ Access to comment status history.
 Easily see which comments were caught or cleared by Keypic, and which were spammed or unspammed by a moderator.
 Access to user status history, so you can easily see which users were caught or cleared by Keypic.
 
-
 = Language and translation =
 
 * English
 * Need more... Please help translate.
 
 If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> for <a href="http://keypic.com/?action=feedback" target="_blank">Keypic Feedback</a> and we'll add it to the plugin.
-You can download the latest version of the program for work with PO and MO files  <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
+You can download the latest version of the program to work with PO and MO files  <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
 
 
 = Technical support =
@@ -95,13 +84,13 @@ If you have any questions or suggestions regarding the functionality of our plug
 Please note that we accept requests in English only.
 Messages in other languages won't be replied.
 
-If you found any bugs in the Keypic Anti Spam Protection plugin, you can notify us about it and we'll investigate and fix the issue.
+If you found any bugs in the Keypic Anti Spam Protection plugin, you can notify us and we'll investigate and fix the issue.
 Your request should contain URL of the website, issues description and WordPress admin panel credentials.
 Send your inquiry to info@keypic.com
 
 
 
-Requirements/Restrictions:
+Requirements and Restrictions:
 -------------------------
  * Keypic Anti Spam Protection plugin works with WordPress 2.9+, WPMU, and BuddyPress (WordPress 3.6+ is highly recommended)
  * PHP5+ is highly recommended
@@ -110,28 +99,28 @@ Requirements/Restrictions:
 
 == Installation ==
 
-Upload the Keypic plugin to your blog, Activate it, then [get registered on Keypic website](https://keypic.com/?action=register) (From version 1.5 is Obligatory!).
+Upload the Keypic plugin to your blog, Activate it, then [get registered on Keypic website](https://keypic.com/?action=register) (From version 1.5 it is Obligatory!).
 
 
 == Frequently Asked Questions ==
-Ask some questions and we will be happy to answer!
+Ask questions and we will be happy to answer!
 Just bring us a [feedback](http://keypic.com/?action=feedback)
 
 
 == Screenshots ==
 
-1. How Keypic act on login form.
-2. How Keypic act on lastpassword.
-3. How Keypic act on register form.
-4. How Keypic act on comments form.
-5. How Keypic act on register form in case of spam.
+1. How Keypic works on login form.
+2. How Keypic works on lastpassword.
+3. How Keypic works on register form.
+4. How Keypic works on comments form.
+5. How Keypic works on register form in case of spam.
 6. Keypic control panel without FormID.
 7. Keypic control panel with FormID.
 8. Keypic control panel with FormID properly installed.
 
 
 == Upgrade Notice ==
-A new version is waiting for next week
+A new version is scheduled for next week
 
 
 == Changelog ==
