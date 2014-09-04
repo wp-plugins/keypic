@@ -3,7 +3,7 @@ Contributors: keypic, PKMateur, cipy
 Author URI: http://keypic.com
 Tags: Akismet, anti-spam, antispam, anti spam protection, bbPress, buddypress, captcha, cf7, comment, comments, comment spam, comment spam prevention, contact form protection, contact form 7, form protection, keypic, login, login protection, security, signup protection, spam, spam comments, spam prevention, spammers, web form protection, wordpress, keypic
 Requires at least: 3.0
-Tested up to: 3.9.2
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv2 or later
 
