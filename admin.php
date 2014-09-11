@@ -26,11 +26,6 @@ function keypic_admin_init()
 {
 	global $wp_version;
 
-	// all admin functions are disabled in old versions
-
-    
-    //add_action( 'admin_menu', array( 'Akismet_Admin', 'admin_menu' ), 5 ); # Priority 5, so it's called before Jetpack's admin_menu.
-
 	if(!function_exists('is_multisite') && version_compare($wp_version, '3.0', '<' ))
 	{
 		function keypic_version_warning()
@@ -236,9 +231,9 @@ function keypic_conf()
 				echo 'RequestType: <br />';
 				echo keypic_get_select_requesttype($k.'_requesttype', $RequestType) . '<br />';
 	
-				echo '<p>' . __('content preview') . '<br />';
-				if($WidthHeight == '1x1'){echo 'Transparenti Pixel Active!';} // Little Hack :)
-				else{echo Keypic::getIt($RequestType, $WidthHeight) . '</p>';}
+//				echo '<p>' . __('content preview') . '<br />';
+//				if($WidthHeight == '1x1'){echo 'Transparenti Pixel Active!';} // Little Hack :)
+//				else{echo Keypic::getIt($RequestType, $WidthHeight) . '</p>';}
 			}
 
 			echo '</div>';
