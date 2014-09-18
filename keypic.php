@@ -3,7 +3,7 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> is quite possibly the best way in the world to protect your blog from comment and trackback spam. It keeps your site protected from spam even while you sleep. To get started: <br /> 1) Click the "Activate" link to the left of this description, <br /> 2) <a href="http://keypic.com/?action=register" target="_blank">Sign up for a FormID</a>, and <br /> 3) Go to your Keypic configuration page, and save FormID key.
-Version: 2.0
+Version: 2.1
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
@@ -32,7 +32,7 @@ if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/
 if(!defined('KEYPIC_PLUGIN_LANGUAGES')) define('KEYPIC_PLUGIN_LANGUAGES', KEYPIC_PLUGIN_DIR . '/languages');
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
 
-define('KEYPIC_VERSION', '2.0');
+define('KEYPIC_VERSION', '2.1');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
@@ -198,6 +198,8 @@ function keypic_login_post($user, $username, $password)
 
 		$spam = Keypic::isSpam($Token, null, $username, $ClientMessage = '', $ClientFingerprint = '');
 
+        if(is_admin()){$spam = 0;}
+
 		if(!is_numeric($spam) || $spam > Keypic::getSpamPercentage())
 		{
 			remove_action('authenticate', 'wp_authenticate_username_password', 20);
@@ -255,6 +257,8 @@ function keypic_register_post($login, $email, $errors)
 	$Token = isset($_POST['Token']) ? $_POST['Token'] : '';
 
 	$spam = Keypic::isSpam($Token, $email, $login, $ClientMessage = '', $ClientFingerprint = '');
+
+    if(is_admin()){$spam = 0;}
 
 	if(!is_numeric($spam) || $spam > Keypic::getSpamPercentage())
 	{
@@ -354,6 +358,8 @@ function keypic_comment_post($id, $comment)
 	$Token = isset($_POST['Token']) ? $_POST['Token'] : '';
 
 	$spam = Keypic::isSpam($Token, $comment->comment_author_email, $comment->comment_author, $comment->comment_content, $ClientFingerprint = '');
+
+    if(is_admin()){$spam = 0;}
 
 	$keypic_comments = get_option('keypic_comments');
 	$keypic_comments = keypic_remove_old_tokens($keypic_comments);
@@ -506,8 +512,8 @@ function keypic_get_select_enabled($select_name='', $select_value = '')
 class Keypic
 {
 	private static $Instance;
-	private static $version = '2.0';
-	private static $UserAgent = 'User-Agent: Keypic PHP Class, Version: 2.0';
+	private static $version = '2.1';
+	private static $UserAgent = 'User-Agent: Keypic PHP Class, Version: 2.1';
 	private static $SpamPercentage = 70;
 	private static $host = 'ws.keypic.com';
 	private static $url = '/';
@@ -628,7 +634,6 @@ class Keypic
 			        return '<a href="http://' . self::$host . '/?RequestType=getClick&amp;Token=' . self::$Token . '" target="_blank"><img src="//' . self::$host . '/?RequestType=getImage&amp;Token=' . self::$Token . '&amp;WidthHeight=' . $WidthHeight . '&amp;PublisherID=' . self::$PublisherID . '" alt="Form protected by Keypic" /></a>';
                     break;
 
-//            case 'getScript':
                 default:
 			        return '<script type="text/javascript" src="//' . self::$host . '/?RequestType=getScript&amp;Token=' . self::$Token . '&amp;WidthHeight=' . $WidthHeight . '&amp;PublisherID=' . self::$PublisherID . '"></script>';
                     break;
@@ -685,49 +690,29 @@ class Keypic
 		else{return false;}
 	}
 
-	// makes a request to the Keypic Web Service
 	private static function sendRequest($fields)
 	{
-		// boundary generation
-		srand((double)microtime()*1000000);
-		$boundary = "---------------------".substr(md5(rand(0,32000)),0,10);
-
-		// Build the header
 		$header = "POST " . self::$url . " HTTP/1.0\r\n";
 		$header .= "Host: " . self::$host . "\r\n";
-		$header .= "Content-Type: multipart/form-data, boundary=$boundary\r\n";
+		$header .= "Content-type: application/x-www-form-urlencoded\r\n";
 		$header .= self::$UserAgent . "\r\n";
-
-
-		$data = '';
-		// attach post vars
-		foreach($fields as $index => $value)
-		{
-			$data .="--$boundary\r\n";
-			$data .= "Content-Disposition: form-data; name=\"$index\"\r\n";
-			$data .= "\r\n$value\r\n";
-			$data .="--$boundary\r\n";
-		}
-
-		$header .= "Content-length: " . strlen($data) . "\r\n\r\n";
 
         $opts = array('http' =>
             array(
                     'method'  => 'POST',
                     'header'  => $header,
-                    'content' => $data,
+                    'content' => http_build_query($fields),
                     'timeout' => 3
                 )
             );
 
-            $context  = stream_context_create($opts);
-            if($result = @file_get_contents('http://' . self::$host, false, $context, -1, 40000))
-            {
-                return $result;
-            }
+        $context  = stream_context_create($opts);
+        if($result = @file_get_contents('http://' . self::$host, false, $context, -1, 40000))
+        {
+            return $result;
+        }
 
         return false;
-
 	}
 }
 

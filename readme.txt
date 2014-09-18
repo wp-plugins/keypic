@@ -125,6 +125,10 @@ A new version is scheduled for next week
 
 == Changelog ==
 
+= 2.1 =
+* Enhancement: New API 2.1
+* Bug Fix: Minor bug fixed
+
 = 2.0 =
 * Enhancement: New API 2.0
 * Enhancement: Removed banner preview
