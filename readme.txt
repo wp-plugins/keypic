@@ -5,7 +5,7 @@ Tags: Akismet, anti-spam, antispam, anti spam protection, bbPress, buddypress, c
 Requires at least: 3.0
 Tested up to: 4.0
 Stable tag: trunk
-License: GPLv2 or later
+License: GPLv2 or laters
 
 Comment Spam Prevention without CAPTCHA. No CAPTCHA, No SPAM! 
 
@@ -45,7 +45,6 @@ Alongside with full anti spam protection you get User Engagement and Conversion 
 = Keypic is the Alternative to CAPTCHA =
 
 If you are looking for a complete Anti Spam Protection and don't want to install plugins based on CAPTCHA technology Keypic is the right choice for you.
-It is also possible to perform a live installation from [wordpress.keypic.com http://wordpress.keypic.com/]
 
 
 = Use Keypic Anti Spam Protection for Free and Get Paid =
