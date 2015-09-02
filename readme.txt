@@ -47,13 +47,6 @@ Alongside with full anti spam protection you get User Engagement and Conversion 
 If you are looking for a complete Anti Spam Protection and don't want to install plugins based on CAPTCHA technology Keypic is the right choice for you.
 
 
-= Use Keypic Anti Spam Protection for Free and Get Paid =
-
-You can use Keypic Anti Spam Protection for free.
-In this case we put an ad banner in the form and every time when someone sees that ad you get paid.
-If you do not want to show third party ads then you can subscribe to one of our packages relevant to your needs.
-In this case you'll get a trasparent pixel, invisible for human's eyes.
-
 = CAUTION! =
 
 Keypic Anti Spam Protection works only for Registered Users.
@@ -108,14 +101,7 @@ Just bring us a [feedback](http://keypic.com/?action=feedback)
 
 == Screenshots ==
 
-1. How Keypic works on login form.
-2. How Keypic works on lastpassword.
-3. How Keypic works on register form.
-4. How Keypic works on comments form.
-5. How Keypic works on register form in case of spam.
-6. Keypic control panel without FormID.
-7. Keypic control panel with FormID.
-8. Keypic control panel with FormID properly installed.
+1. Keypic control panel.
 
 
 == Upgrade Notice ==
