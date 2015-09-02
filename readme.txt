@@ -3,15 +3,15 @@ Contributors: keypic, PKMateur, cipy
 Author URI: http://keypic.com
 Tags: Akismet, anti-spam, antispam, anti spam protection, bbPress, buddypress, captcha, cf7, comment, comments, comment spam, comment spam prevention, contact form protection, contact form 7, form protection, keypic, login, login protection, security, signup protection, spam, spam comments, spam prevention, spammers, web form protection, wordpress, keypic
 Requires at least: 3.0
-Tested up to: 4.0
+Tested up to: 4.3
 Stable tag: trunk
 License: GPLv2 or laters
 
-Comment Spam Prevention without CAPTCHA. No CAPTCHA, No SPAM! 
+Comment Spam Prevention without CAPTCHA. No CAPTCHA, No SPAM!
 
 == Description ==
 
-Keypic is the alternative to CAPTCHA. Keypic stands for safe Internet and accessibility. 
+Keypic is the alternative to CAPTCHA. Keypic stands for safe Internet and accessibility.
 And without CAPTCHA. Your users will appreciate it very much.
 
 [youtube http://www.youtube.com/watch?v=E4WGxcYZ4x8]
@@ -123,6 +123,9 @@ A new version is scheduled for next week
 
 
 == Changelog ==
+
+= 2.1.1 =
+* Bug Fix: Minor bug fixed
 
 = 2.1 =
 * Enhancement: New API 2.1

@@ -3,13 +3,13 @@
 Plugin Name: NO CAPTCHA Anti-Spam with Keypic
 Plugin URI: http://keypic.com/
 Description: For many people, <a href="http://keypic.com/" target="_blank">Keypic</a> is quite possibly the best way in the world to protect your blog from comment and trackback spam. It keeps your site protected from spam even while you sleep. To get started: <br /> 1) Click the "Activate" link to the left of this description, <br /> 2) <a href="http://keypic.com/?action=register" target="_blank">Sign up for a FormID</a>, and <br /> 3) Go to your Keypic configuration page, and save FormID key.
-Version: 2.1
+Version: 2.1.1
 Author: Keypic
 Author URI: http://keypic.com
 License: GPLv2 or later
 */
 
-/*  Copyright 2010-2011  Keypic Inc.  (email : info@keypic.com)
+/*  Copyright 2010-2016  Keypic Inc.  (email : info@keypic.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -32,7 +32,7 @@ if(!defined('KEYPIC_PLUGIN_URL')) define('KEYPIC_PLUGIN_URL', WP_PLUGIN_URL . '/
 if(!defined('KEYPIC_PLUGIN_LANGUAGES')) define('KEYPIC_PLUGIN_LANGUAGES', KEYPIC_PLUGIN_DIR . '/languages');
 if(!defined('KEYPIC_PLUGIN_MODULES_DIR')) define('KEYPIC_PLUGIN_MODULES_DIR', KEYPIC_PLUGIN_DIR . '/modules');
 
-define('KEYPIC_VERSION', '2.1');
+define('KEYPIC_VERSION', '2.1.1');
 
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action')){echo "Hi there!  I'm just a plugin, not much I can do when called directly."; exit;}
